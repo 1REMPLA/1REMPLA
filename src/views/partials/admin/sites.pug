@@ -1,0 +1,58 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+    
+  title Admin - #{title}
+  h2.page-header Gérer les lieux d'exercice
+  br
+  h3 Lieux d'exercice
+  br
+  table.table
+      thead
+          tr
+              th
+                  center Nom du lieu d'exercice
+              th
+                  center Adresse
+              th
+                  center Ville
+              th
+                  center Code Postal
+              th
+                  center Détails
+      tbody
+          each site in sites
+            tr
+                td
+                    center #{site.nomSite}
+                td
+                    center #{site.adresseSite}
+                td
+                    center #{site.villeSite}
+                td
+                    center #{site.codePostalSite}
+                td
+                    center
+                      a(href="/admin/dashboard/sites/id/"+site._id)
+                        i.fa.fa-home.fa-fw
+  .form-group(align="center")
+      a(href="/admin/dashboard") Retour

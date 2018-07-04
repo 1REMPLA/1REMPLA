@@ -1,0 +1,92 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  .container
+      .jumbotron
+          .row
+              .col-xs-4(align="center")
+                  img.photoProfil(src=membre.photoMembre)
+              h2 #{membre.nom} #{membre.prenom}
+              br
+              .col-xs-4
+                  b Spécialité : 
+                  p #{specialite.typeSpecialite}
+                  b Adresse mail : 
+                  p #{membre.adresseMail}
+                  b Téléphone : 
+                  p #{membre.telMembre}
+                  if membre.successeur
+                    p Recherche un successeur         
+                  if membre.collaborateur
+                    p Recherche un collaborateur
+              .col-xs-4
+                  b Adresse : 
+                  p #{membre.adresseMembre}
+                  b Ville : 
+                  p #{membre.villeMembre}
+                  b Code Postal : 
+                  p #{membre.codePostalMembre}
+          br
+          if membre.biographie
+            h3 Biographie
+            hr
+            p #{membre.biographie}
+            br
+                
+          if membre.sites
+            h3 Lieu(x) d'exercice
+            hr
+            table
+              thead
+                  tr
+                      th Nom du site
+                      th Lieu du site
+                      th N° de téléphone
+                      th Horaires
+                      th Type de site
+              tbody
+                  tr
+                      td
+                          a.aSite(href="/admin/dashboard/sites/id/"+site1._id) #{site1.nomSite}
+                      td #{site1.adresseSite} #{site1.villeSite} #{site1.codePostalSite}
+                      td #{site1.telSite}
+                      td #{site1.horaires}
+                      td #{typeSite1.typeSite}
+                  tr
+                      if site2
+                        td
+                            a.aSite(href="/admin/dashboard/sites/id/"+site2._id) #{site2.nomSite}
+                        td #{site2.adresseSite} #{site2.villeSite} #{site2.codePostalSite}
+                        td #{site2.telSite}
+                        td #{site2.horaires}
+                        td #{typeSite2.typeSite}
+                  tr
+                      if site3
+                        td
+                            a.aSite(href="/admin/dashboard/sites/id/"+site3._id) #{site3.nomSite}
+                        td #{site3.adresseSite} #{site3.villeSite} #{site3.codePostalSite}
+                        td #{site3.telSite}
+                        td #{site3.horaires}
+                        td #{typeSite3.typeSite}
+  .form-group(align="center")
+      a(href="/admin/dashboard/membres") Retour

@@ -1,0 +1,39 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+              
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/") Tableau de bord
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  script(src='https://www.google.com/recaptcha/api.js')
+  // Titre de la page
+  title #{title}
+  h2.page-header Connexion
+  // Messages d'erreurs
+  if hasErrors
+    .alert.alert-danger(align="center")
+      each message in messages
+        p #{message}
+  // Formulaire de connexion
+  form(name="formulaireConnexion", method="POST", action="/admin", align="center")
+      label Identifiant
+      input.form-control(type="text", name="identifiant", placeholder="Identifiant", required="true")
+      br
+      label Mot de Passe
+      input.form-control(type="password", name="motDePasse", placeholder="Mot de passe", required="true")
+      br
+      div.g-recaptcha(data-sitekey="6LcuMBoUAAAAAJC8djgvsiGMM4M5bnOnvWgmSLIV", name="captcha", align="center", required="true")
+      br
+      button.btn.btn-danger(type="submit") Se connecter

@@ -1,0 +1,872 @@
+/*
+  Style de base
+*/
+body {
+  padding: 50px;
+}
+
+a {
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
+}
+
+table {
+  width: 100%;
+}
+
+thead {
+  border-bottom: solid lightgrey;
+  border-width: 1px;
+}
+
+th{
+  padding-right: 1%;
+}
+
+/*
+  Page d'accueil
+*/
+
+.accueil {
+  padding: 0;
+}
+
+i.fa-fw {
+  width: 2em;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+  background-color: #f14444;
+}
+
+.col-md-9 {
+  background-color: white;
+  border-color: white;
+  box-shadow: none;
+}
+
+.redColor {
+  color: #d66767;
+}
+
+.descCard {
+  width: 33%;
+  float: left;
+}
+
+.descIcon {
+  font-size: 400%;
+}
+
+.descCardTitle {
+  font-size: 200%;
+}
+
+.descCardDescription{
+  text-align: left;
+  margin-left: 7.5%;
+  margin-right: 7.5%;
+  color: #7c7c7c;
+  font-size: 120%;
+}
+
+@media (max-width: 780px) {
+  .descCard {
+    width: 100%;
+    float: none;
+  }
+}
+
+#blok3 {
+  background-color: rgba(214, 103, 103, 0.2);
+}
+
+.step {
+  width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.stepTitle {
+  font-size: 250%;
+}
+
+.stepGif{
+  float: left;
+  width: 55%;
+  height: 380px;
+}
+
+.stepTextDiv {
+  float: left;
+  width: 35%;
+  text-align: left;
+}
+
+.stepTextDivLeft {
+  margin-right: 10%;
+}
+
+.stepTextDivRight {
+  margin-left: 10%;
+}
+
+.stepCheck {
+  font-size: 175%;
+  margin: 20px 10px 0px 0px;
+}
+
+.stepDescription {
+  color: #6b6b6b;
+  font-size: 120%;
+}
+
+#gif2{
+  display: none;
+}
+
+@media (max-width: 1100px) {
+  .step {
+    margin-top: -40px;
+  }
+
+  .stepGif{
+    float: none;
+    width: 100%;
+    height: auto;
+  }
+
+  .stepTextDiv {
+    float: none;
+    width: 100%;
+  }
+
+  .stepTextDivLeft {
+    margin-right: 0%;
+  }
+
+  .stepTextDivRight {
+    margin-left: 0%;
+  }
+
+  #gif1{
+    display: none;
+  }
+
+  #gif2{
+    display: block;
+  }
+}
+
+.thumbnail {
+  border-color: white;
+}
+
+b.titleProfil {
+  color: #f14444;
+}
+
+ul.navigation {
+  position: static;
+}
+
+.col-md-9 .jumbotron {
+  background-color: white;
+}
+
+.coloured {
+  background-color: #FF6666;
+}
+
+.wrapper {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+/*
+  Jumbotron
+*/
+.container .jumbotron{
+  background-color: white;
+}
+
+.jumbotron-annonce {
+  background-color: white;
+  border-style: solid;
+  border-width: 1.5px;
+  border-radius: 2px;
+  border-color: #969696;
+}
+
+/*
+  Style pour les liens
+*/
+a.aSite {
+  color: #f14444;
+}
+
+a.aTabAnnonce {
+  color: #f14444;
+}
+
+a.deconnexionBtn {
+  cursor: pointer;
+}
+
+a.underlineProfil {
+  color: #f14444;
+}
+
+/*
+  Style pour la classe barre de navigation
+*/
+.navbar-toggle {
+  margin-top: -2px;
+}
+
+nav.navbar-findcond {
+  background: #fff;
+  border-color: #ccc;
+  box-shadow: 0 0 2px 0 #ccc;
+}
+
+nav.navbar-findcond a {
+  color: #f14444;
+}
+
+nav.navbar-findcond ul.navbar-nav a {
+  color: #f14444;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  border-color: #fff;
+}
+
+nav.navbar-findcond ul.navbar-nav a:hover,
+nav.navbar-findcond ul.navbar-nav a:visited,
+nav.navbar-findcond ul.navbar-nav a:focus,
+nav.navbar-findcond ul.navbar-nav a:active {
+  background: #fff;
+}
+
+nav.navbar-findcond ul.navbar-nav a:hover {
+  border-color: #f14444;
+}
+
+.fa.fa-bars.fa-pw {
+  color: #f14444;
+}
+
+/*
+  Style d'affichage
+*/
+
+.container .row .col-xs-6 .changementPhotoBorder {
+  border-right: solid #e0e0e0;
+}
+
+.left {
+  float: left;
+  width: 47.5%;
+}
+
+.middle {
+  float: left;
+  width: 5%;
+}
+
+/*
+  Style pour les images
+*/
+
+img.navbarbrand.imgHeader {
+  width: auto;
+  height: auto;
+  max-width: 50px;
+  max-height: 50px;
+}
+
+img.imgHeader2 {
+  width: 100%;
+  height: 100%;
+  /*max-width: 450px;
+  max-height: 450px;*/
+}
+
+img.imgAdmin {
+  width: auto;
+  height: auto;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+img.imageAccueil {
+  width: 100%;
+  height: auto;
+}
+
+img.photoProfil {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+img.photoSite {
+  width: 100%;
+  height: auto;
+}
+
+img.photoAnnonce {
+  width: 100%;
+  height: 100%;
+  max-height: 200px;
+
+}
+
+img.apercuChangement {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+img.apercuAncienne {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+img.baniereSite {
+  width: 100%;
+  max-height: 100%;
+}
+
+img.petitePhoto {
+  width: auto;
+  height: auto;
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.col-xs-4 img.galerie {
+  width: auto;
+  height: auto;
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.divBaniereSite {
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.imageSite {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+/*
+  Style pour la classe "choixProfil" dans le formulaire d'inscription
+*/
+.choixProfil a {
+  padding-top: 30px;
+}
+
+.choixProfil button {
+  width: 15%;
+  height: 15%;
+  font-size: 150%;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+.choixProfil h3 {
+  font-weight: normal;
+}
+
+/*
+  Style pour les formulaires
+*/
+form input.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+form textarea.ng-invalid.ng-touched {
+    border-color: red;
+}
+
+form small {
+  color: red;
+}
+
+form select.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+form .container-fluid .row {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  border-style: solid;
+  border-color: grey;
+  border-width: thin;
+}
+
+form .container-fluid .row .col-xs-6 small {
+  color: red;
+}
+
+form .container-fluid .row .col-xs-6 input.ng-invalid.ng-touched,
+form .container-fluid .row .col-xs-6 select.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+/*
+  Style pour l'icone de chargement
+*/
+.glyphicon-refresh-animate {
+    -animation: spin .7s infinite linear;
+    -ms-animation: spin .7s infinite linear;
+    -webkit-animation: spinw .7s infinite linear;
+    -moz-animation: spinm .7s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+@-webkit-keyframes spinw {
+    from { -webkit-transform: rotate(0deg);}
+    to { -webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes spinm {
+    from { -moz-transform: rotate(0deg);}
+    to { -moz-transform: rotate(360deg);}
+}
+
+.profil{
+  width: 90%;
+  height: 60%;
+  margin-top: 2%;
+  padding-left: 7%;
+
+  border-left: solid #e0e0e0;
+  border-radius: 10px;
+
+  font-size: 130%;
+  line-height:2.3;
+}
+
+.profil::first-line {
+    font-size: 30pt;
+    line-height:2;
+}
+
+#index .slider-selection {
+	background: #eda59e;
+}
+#index .slider-handle {
+	background: #d24444;
+}
+
+#mapid { height: 500px; }
+
+.angular-google-map-container {
+  height : 390px;
+}
+
+.angular-google-map-container-site {
+  width: 100%;
+  height : 330px;
+}
+
+.angular-google-map-container-zonesGeo {
+  width: 100%;
+  height : 330px;
+}
+
+.angular-google-map-container-recherche {
+  width: 40%;
+}
+
+.modal {
+  max-width: 95%;
+  max-height: 95%;
+  position: fixed;
+}
+
+.rechercheModal {
+  width: 60%;
+  height: 30%;
+  position: absolute;
+  top: 25%;
+  left: 20%;
+  background-color: white;
+  opacity: 0.95;
+  border-radius: 25px;
+}
+
+.odd-cell {
+  background-color: #44c665;
+}
+
+.odd-cell-valide {
+  background-color: #9bdfdf;
+}
+
+.odd-cell-occupe {
+  background-color: #e75353;
+}
+
+.odd-cell-lock-occupe-details {
+  background-color: #e75353;
+  pointer-events: none;
+  cursor: default;
+
+}
+
+.odd-cell-demande {
+  background-color: #e9b268;
+}
+
+.odd-cell-lock {
+  background-color: #f6f6f6;
+}
+
+.cal-events-num {
+  display: none;
+}
+
+#cal-week-box {
+  display: none;
+}
+
+.cadreInfo {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+
+.borderFiche {
+  border-width: 5px;
+  border-radius: 2px;
+  border-color: #969696;
+}
+
+.accueilImg {
+  background-image:
+          linear-gradient(
+                  to bottom,
+                  rgba(0,0,0,0.5),
+                  rgba(0,0,0,0.5)
+          ),
+          url(/images/logo.png);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: bottom;
+}
+
+.blok1 {
+  position: relative;
+  height: 100%;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
+
+.social:hover {
+     -webkit-transform: scale(1.1);
+     -moz-transform: scale(1.1);
+     -o-transform: scale(1.1);
+ }
+
+.icon-ul { list-style-type:none !important; margin:0px; padding:0px;}
+.icon-ul li { line-height:75px; width:100%; float:left;}
+.icon { float:left; margin-right:5px;}
+.copyright { min-height:40px; background-color:#000000;}
+.copyright p { text-align:left; color:#FFF; padding:10px 0; margin-bottom:0px;}
+.heading7 { font-size:21px; font-weight:700; color:#d9d6d6; margin-bottom:22px;}
+.post p { font-size:12px; color:#FFF; line-height:20px;}
+.post p span { display:block; color:#8f8f8f;}
+.bottom_ul { list-style-type:none; float:right; margin-bottom:0px;}
+.bottom_ul li { float:left; line-height:40px;}
+.bottom_ul li:after { content:"/"; color:#FFF; margin-right:8px; margin-left:8px;}
+.bottom_ul li a { color:#FFF;  font-size:12px;}
+
+.afficherBordures{
+  border : 1px solid black;
+}
+
+.panel-heading{
+  text-align: center;
+}
+
+#formulaireRechercheAnnonce{
+  padding-top: 10px;
+  border-top: 3px solid;
+  border-radius: 15px;
+  border-color: white;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#trouverAnnonceBtn,
+#trouverRemplaçantBtn {
+  background-color: transparent;
+  position: relative;
+  top: -37px;
+  font-size: 120%;
+  max-height: 28px;
+  background-image: url(../images/topCheck.png);
+  background-size: 90% 30px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-style: none;
+}
+
+#aideBtn {
+  position: fixed;
+  z-index: 1;
+  width: 45px;
+  height: 45px;
+  right: 22px;
+  bottom: 20px;
+  text-align: center;
+  padding: 6px 0;
+  background-color: #f14444;
+  border: none;
+  font-size: 15px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+.textAideBtn {
+  position: fixed;
+  z-index: 1;
+  width: 70px;
+  height: 17px;
+  right: 10px;
+  bottom: 73px;
+  background-color: #333333;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+  font-size: 12px;
+}
+
+#avisBtn {
+  position: fixed;
+  z-index: 1;
+  width: 45px;
+  height: 45px;
+  right: 80px;
+  bottom: 20px;
+  text-align: center;
+  padding: 6px 0;
+  background-color: #f14444;
+  border: none;
+  font-size: 15px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+
+.textAvisBtn {
+  position: fixed;
+  z-index: 1;
+  width: 120px;
+  height: 17px;
+  right: 47px;
+  bottom: 73px;
+  background-color: #333333;
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+  font-size: 12px;
+}
+
+i.fa.fa-star.fa-fw {
+  color: #FFD700;
+}
+
+.redText {
+  color: red;
+}
+
+.blackText {
+  color: black;
+}
+
+#actionPerim {
+  -webkit-transition: opacity 600ms, visibility 600ms;
+  transition: opacity 600ms, visibility 600ms;
+}
+
+.visiblePerim {
+  position: relative;
+  z-index: 2;
+  visibility: visible;
+  opacity: 1;
+}
+
+.hidePerim {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.galerieOK {
+  display: inline-block;
+}
+
+/*-------------------------------------------------------------------------------------------*/
+
+/*
+  Style pour site mobile
+ */
+@media (max-width: 400px) {
+  body{
+    padding-top: 50px;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  img.photoProfil {
+    max-width: 150px;
+    max-height: 150px;
+  }
+}
+@media (max-width: 900px) {
+  /*Index*/
+  #trouverAnnonceBtn, #trouverRemplaçantBtn {
+    background-image: url('') !important;
+    background-color: rgb(255, 255, 255) !important;
+    top: -27px !important;
+    border-radius: 3px;
+    margin-bottom: 3px;
+  }
+
+  #formulaireRechercheAnnonce{
+    border-top: 0px solid !important;
+  }
+
+  .blackText{
+    color: black !important;
+  }
+
+  .redText {
+    color:  #f14444 !important;
+  }
+
+  .blok1{
+    height: auto !important;
+  }
+
+  /*Inscription*/
+  .input-group {
+    display: block;
+  }
+
+  .choixProfil button{
+    width: 150px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+    float: none;
+    width: 100%;
+  }
+
+  .ajouterSite {
+    width: 100%;
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  input[type="file"]{
+    font-size: 13px;
+    margin-left: -23px;
+  }
+  label{
+    display: inline !important;
+  }
+
+  table{
+    font-size: 11px;
+  }
+
+  .btn-toolbar{
+    display: inline-flex;
+    margin-bottom: 1em;
+  }
+  .btn-toolbar>.btn, .btn-toolbar>.btn-group, .btn-toolbar>.input-group{
+    display: grid;
+  }
+
+  img.apercuChangement, img.apercuAncienne{
+    max-height: 150px;
+    max-width: 150px;
+  }
+
+  .nav-tabs{
+    display: grid;
+  }
+
+  .nav-tabs>li{
+    text-align: center;
+  }
+
+  h2 {
+    text-align: center;
+  }
+
+  img.photoProfil {
+    max-width: 150px;
+    max-height: 150px;
+  }
+
+  .col-xs-1 {
+    margin-top: -23em;
+  }
+  .daterangepicker .daterangepicker_input{
+    position: absolute;
+  }
+}
+
+@media (min-width: 700px) {
+  .btn-fixed-right-corner {
+    width: 50px !important;
+    height: 50px !important;
+    right: 50px !important;
+  }
+  .panel-body .btn-danger{
+    margin-top: 5px;
+    width: auto !important;
+  }
+}
+
+@media (min-width: 0px){
+  .btn-fixed-right-corner {
+    position: fixed;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+    right: 40px;
+    bottom: 0px;
+  }
+
+  .panel-body .btn-danger{
+    margin-top: 5px;
+    width: 100%;
+  }
+}

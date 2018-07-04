@@ -1,0 +1,58 @@
+extends ../../layouts/layout
+
+block content
+  title(ng-bind="pageTitle")
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  h2.page-header(ng-bind="title")
+  .container
+      .row
+          div(ng-repeat="annonce in annonces")
+              .col-xs-6.col-md-3
+                  .thumbnail
+                      a(target="_blank", href="/#/annonces/{[{annonce._id}]}")
+                          .imageSite
+                              img.photoSite(ng-if="annonce.showPhotos", ng-src="{[{annonce.idRemplacant.photoMembre}]}")
+                              img.photoSite(ng-if="!annonce.showPhotos", ng-src="/images/aucune.jpg")
+                          .caption
+                              h3 {[{annonce.idRemplacant.nom}]} {[{annonce.idRemplacant.prenom}]}
+                              p Spécialité : {[{annonce.idRemplacant.specialite.typeSpecialite}]}
+  // Chargement...
+  div(align="center", name="load", ng-if="load")
+      span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+      |   Chargement...
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false", , ng-if="connecte")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel2.modal-title Aide - Recherche et réponse d'annonces
+              .modal-body
+                  videogular(vg-theme="rechercheReponseAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="rechercheReponseAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

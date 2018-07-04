@@ -1,0 +1,45 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  .container
+      .row
+          .col-xs-6
+              .jumbotron(align="center")
+                  h2 Membres
+                  br
+                  a.btn.btn-danger(type="button", href="/admin/dashboard/membres") Gérer les membres
+          .col-xs-6
+              .jumbotron(align="center")
+                  h2 Lieux d'exercice
+                  br
+                  a.btn.btn-danger(type="button", href="/admin/dashboard/sites") Gérer les lieux d'exercice
+      .row
+          .col-xs-6
+              .jumbotron(align="center")
+                  h2 Annonces
+                  br
+                  a.btn.btn-danger(type="button", href="/admin/dashboard/annonces") Gérer les annonces
+          .col-xs-6
+              .jumbotron(align="center")
+                  h2 Réponses aux annonces
+                  br
+                  a.btn.btn-danger(type="button", href="/admin/dashboard/reponses") Gérer les réponses aux annonces

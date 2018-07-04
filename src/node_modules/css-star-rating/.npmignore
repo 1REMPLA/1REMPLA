@@ -1,0 +1,6 @@
+chore
+/sc5-styleguide/
+.gitignore
+.idea
+gulpfile.js
+.travis.yml

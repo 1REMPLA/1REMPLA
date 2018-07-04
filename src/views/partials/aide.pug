@@ -1,0 +1,17 @@
+script.
+    function showTextAvis() {
+        document.getElementsByClassName("textAvisBtn")[0].hidden = false;
+    };
+
+    function hideTextAvis() {
+        document.getElementsByClassName("textAvisBtn")[0].hidden = true;
+    };
+
+    function avis() {
+        location.href = "/#/votre-avis";
+    };
+
+button#avisBtn(class="btn btn-danger", ng-if="connecte && !admin", onmouseover="showTextAvis()", onmouseout="hideTextAvis()", onclick="avis()")
+  i.fa.fa-star.fa-fw
+.textAvisBtn(hidden="true")
+  span Donnez votre avis

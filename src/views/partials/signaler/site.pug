@@ -1,0 +1,140 @@
+extends ../../layouts/layout.pug
+
+block content
+  // Titre de la page
+  title Signalement d'informations
+  br
+  br
+  
+  h2.titleProfil(align="center") 
+    i.fa.fa-flag.fa-fw(style="color: #f14444;")
+    | Signaler un lieu d'exercice
+  hr
+  .container
+    small(style="color: red;", ng-if="!notFound && !succes") * : Champs obligatoires
+    br
+    i(ng-if="!notFound && !succes") D'après l'alinéa 5 de l'article 6 de la loi pour la confiance dans l'économie numérique de 2004, nous sommes dans l'obligation de vous demander de remplir tous les champs marqués obligatoires pour pouvoir agir sur les données signalées.
+    .jumbotron
+      .alert.alert-danger(align="center", name="errorMsg", ng-if="notFound")
+        p Lieu d'exercice non trouvée
+      .alert.alert-danger(align="center", name="errors", ng-if="error")
+        p(ng-repeat="message in erreurMsg") {[{message}]}
+      .alert.alert-success(align="center", name="succes", ng-if="succes")
+        p {[{succesMsg}]}
+      form(name="formulaireSignalisationSite", ng-submit="signalerSite(site)", ng-if="!notFound && !succes", novalidate)
+        .row
+          .col-md-6
+            h3(align="center") Signalement
+            hr
+            label Que se passe-t-il ?
+              span(style="color: red;") *
+            br
+            br
+            p
+              input(type="radio", name="raison", ng-model="site.raison", value="Les informations sont incorrectes", ng-required="true")
+              | &nbsp;&nbsp;Les informations sont incorrectes
+            p
+              input(type="radio", name="raison", ng-model="site.raison", value="Les photos du lieu d'exercice sont inapropriées", ng-required="true")
+              | &nbsp;&nbsp;Les photos du lieu d'exercice sont inappropriées
+            p
+              input(type="radio", name="raison", ng-model="site.raison", value="La description du lieu d'exercice est inappropriée", ng-required="true")
+              | &nbsp;&nbsp;La description du lieu d'exercice est inappropriée
+            p
+              input(type="radio", name="raison", ng-model="site.raison", value="Autre", ng-required="true")
+              | &nbsp;&nbsp;Autre
+            br
+            div(ng-if="site.raison == 'Autre'")
+              label Précisez
+                span(style="color: red;") *
+              textarea.form-control(type="text", name="precision", rows="3", placeholder="Précisez la raison de la signalisation", ng-model="site.precision", ng-required="site.raison == 'Autre'", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{1,750}$/")
+              div(align="center", ng-if="formulaireSignalisationSite.precision.$invalid && formulaireSignalisationSite.precision.$touched")
+                small La précision de la raison est vide ou contient des caractères non supportés (entre 1 et 750 caractères)
+            hr
+            label Informations supplémentaires à communiquer
+            textarea.form-control(type="text", name="infosSupp", rows="3", placeholder="Indiquez des informations qui vous semblent importantes à nous communiquer", ng-model="site.infosSupp", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{0,750}$/")
+            div(align="center", ng-if="formulaireSignalisationSite.infosSupp.$invalid && formulaireSignalisationSite.infosSupp.$touched")
+              small Les informations supplémentaires contiennent des caractères non supportés (entre 0 et 750 caractères)
+            br
+          .col-md-6
+            h3(align="center") Informations personnelles
+            hr
+            label.control-label Nom
+              span(style="color: red;") *
+            input.form-control(type="text", name="nom", placeholder="Votre nom", ng-model="site.nomSignaleur", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.nom.$invalid && formulaireSignalisationSite.nom.$touched")
+              small Insérez un nom valide (entre 1 et 48 caractères)
+            br
+            label.control-label Prénom
+              span(style="color: red;") *
+            input.form-control(type="text", name="prenom", placeholder="Votre prénom", ng-model="site.prenomSignaleur", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.prenom.$invalid && formulaireSignalisationSite.prenom.$touched")
+              small Insérez un prénom valide (entre 1 et 48 caractères)
+            br
+            label.control-label Profession
+              span(style="color: red;") *
+            input.form-control(type="text", name="profession", placeholder="Votre profession", ng-model="site.professionSignaleur", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù'/ ]{1,48}$/", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.profession.$invalid && formulaireSignalisationSite.profession.$touched")
+              small Insérez une profession valide (entre 1 et 48 caractères)
+            br
+            label.control-label Nationalité
+              span(style="color: red;") *
+            select.form-control(name="nationalite", ng-model="site.nationaliteSignaleur", ng-options="nationalite.libelle for nationalite in nationalites", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.nationalite.$invalid && formulaireSignalisationSite.nationalite.$touched")
+              small Sélectionnez une nationalité
+            br
+            label Adresse personnelle
+              span(style="color: red;") *
+            input.form-control(type="text", name="adresse", placeholder="Votre adresse personnelle", ng-model="site.adresseSignaleur", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,100}$/", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.adresse.$invalid && formulaireSignalisationSite.adresse.$touched")
+              small Insérez une adresse personnelle valide (entre 1 et 100 caractères)
+            br
+            .left
+              label Ville
+                span(style="color: red;") *
+              input.form-control(type="text", name="ville", placeholder="Votre ville", ng-model="site.villeSignaleur", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+              div(align="center", ng-if="formulaireSignalisationSite.ville.$invalid && formulaireSignalisationSite.ville.$touched")
+                small Insérez une ville valide (entre 1 et 48 caractères)
+                br
+            .middle
+              br
+            .left
+              label Code Postal
+                span(style="color: red;") *
+              input.form-control(type="text", name="codePostal", placeholder="Votre code postal", ng-model="site.codePostalSignaleur", ng-pattern="/^[0-9]{5}$/", ng-required="true")
+              div(align="center", ng-if="formulaireSignalisationSite.codePostal.$invalid && formulaireSignalisationSite.codePostal.$touched")
+                small Insérez un code postal valide (5 chiffres)
+              br
+            br
+            br
+            br
+            p &nbsp;
+            label Date de naissance
+              span(style="color: red;") *
+            input.form-control(type="date", name="dateNaissance", ng-model="site.dateNaissanceSignaleur", ng-required="true")
+            div(align="center", ng-if="formulaireSignalisationSite.dateNaissance.$invalid && formulaireSignalisationSite.dateNaissance.$touched")
+              small Insérez votre date de naissance
+            br
+            .left
+              label Ville de naissance
+                span(style="color: red;") *
+              input.form-control(type="text", name="villeNaissance", placeholder="Votre ville de naissance", ng-model="site.villeNaissanceSignaleur", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+              div(align="center", ng-if="formulaireSignalisationSite.villeNaissance.$invalid && formulaireSignalisationSite.villeNaissance.$touched")
+                small Insérez une ville de naissance valide (entre 1 et 48 caractères)
+              br
+            .middle
+              br
+            .left
+              label Code postal de ville de naissance
+                span(style="color: red;") *
+              input.form-control(type="text", name="codePostalNaissance", placeholder="Votre code postal", ng-model="site.codePostalNaissanceSignaleur", ng-pattern="/^[0-9]{5}$/", ng-required="true")
+              div(align="center", ng-if="formulaireSignalisationSite.codePostalNaissance.$invalid && formulaireSignalisationSite.codePostalNaissance.$touched")
+                small Insérez un code postal de ville de naissance valide (5 chiffres)
+              br
+        div(align="center")
+          hr
+          div(vc-recaptcha, key="'6LcuMBoUAAAAAJC8djgvsiGMM4M5bnOnvWgmSLIV'", ng-model="site.captcha", ng-required="true")
+          br
+          button.btn.btn-danger(type="submit", ng-disabled="formulaireSignalisationSite.$invalid") Signaler
+      div(align="center", name="load", ng-if="load")
+        span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+        |   Chargement...

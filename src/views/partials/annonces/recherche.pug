@@ -1,0 +1,84 @@
+extends ../../layouts/layout
+
+block content
+  // Titre de la page
+  title(ng-bind="pageTitle")
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  h2.page-header(ng-bind="title")
+  .col-xs-7
+      .row
+          div(ng-repeat="annonce in annonces | filter:show", ng-if="annonce.show")
+              .col-sm-8.col-md-6
+                  .thumbnail
+                      a(target="_blank", href="/#/annonces/{[{annonce._id}]}")
+                          .imageSite
+                              img.photoSite(ng-if="annonce.showPhotos", ng-src="{[{annonce.idSite.photos[0]}]}")
+                              img.photoSite(ng-if="!annonce.showPhotos", ng-src="/images/aucune.jpg")
+                          .caption
+                              h3(name="titreAnnonce", ng-bind="annonce.idSite.nomSite")
+                              span(name="adresseSite", ng-if="annonce.idSite.adresseSite != '' || annonce.idSite.adresseSite != 'null'", ng-bind="annonce.idSite.adresseSite")
+                              span &nbsp;-&nbsp;
+                              span(name="villeSite", ng-bind="annonce.idSite.villeSite")
+                              span &nbsp;
+                              span(name="codePostalSite", ng-bind="annonce.idSite.codePostalSite")
+                              br
+                              span Annonce publiée par : {[{annonce.idInstalle.nom}]} {[{annonce.idInstalle.prenom}]}
+                      center
+                          button.btn.btn-default.btn-sm(ng-click="centrerAnnonce(annonce.indexMap,annonce.idSite.coordonneesSite)") Afficher sur la carte
+
+  ui-gmap-google-map.angular-google-map-container-recherche(center="map.center", zoom="map.zoom", bounds="map.bounds")
+      ui-gmap-circle(center="circle.center", radius="circle.radius", fill="circle.fill", stroke="circle.stroke", clickable="circle.clickable")
+      ui-gmap-marker(ng-repeat="m in map.markers", coords="m.coords", icon="m.icon", idkey="m.id", options="m.options", events="map.markersEvents")
+          ui-gmap-window(show="map.mapWindow.show", coords="map.mapWindow.coords", options="map.mapWindow.options", closeclick="map.mapWindow.closeClick()")
+              div
+                  center
+                      h6 {[{annonces[m.id].idSite.nomSite}]}
+                      div
+                          span(ng-if="annonces[m.id].idSite.adresseSite != '' || annonces[m.id].idSite.adresseSite != 'null'") {[{annonces[m.id].idSite.adresseSite}]} -
+                          span {[{annonces[m.id].idSite.villeSite}]}
+                          span {[{annonces[m.id].idSite.codePostalSite}]}
+                      br
+                      i Annonce publiée par : {[{annonces[m.id].idInstalle.nom}]} {[{annonces[m.id].idInstalle.prenom}]}
+                      br
+                      br
+                      a.btn.btn-default.btn-sm(target="_blank", href="/#/annonces/{[{annonces[m.id]._id}]}") Voir l'annonce
+  // Chargement...
+  div(align="center", name="load", ng-if="load")
+      span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+      |   Chargement...
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false", , ng-if="connecte")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel2.modal-title Aide - Recherche et réponse d'annonces
+              .modal-body
+                  videogular(vg-theme="rechercheReponseAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="rechercheReponseAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

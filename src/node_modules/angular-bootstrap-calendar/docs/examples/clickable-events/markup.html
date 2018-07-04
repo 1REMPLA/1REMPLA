@@ -1,0 +1,11 @@
+<div ng-controller="ClickableEventsCtrl as vm">
+  <ng-include src="'calendarControls.html'"></ng-include>
+  <mwl-calendar
+    events="vm.events"
+    view="vm.calendarView"
+    view-date="vm.viewDate"
+    cell-is-open="vm.cellIsOpen"
+    cell-auto-open-disabled="true"
+    on-event-click="vm.eventClicked(calendarEvent);">
+  </mwl-calendar>
+</div>

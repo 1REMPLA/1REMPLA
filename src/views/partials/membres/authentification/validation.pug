@@ -1,0 +1,47 @@
+extends ../../../layouts/layout
+
+block content
+  style.
+      body {
+      background-image:
+      linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+      ),
+      url(/images/logo.png);
+      background-attachment: fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: bottom;
+      }
+      .panel-default {
+      opacity: 0.9;
+      margin-top:30px;
+      }
+      .form-group.last { margin-bottom:0px; }
+  // Titre de la page
+  title(ng-bind="pageTitle")
+  br
+  br
+  br
+  br
+  .container
+      .row
+          .col-md-3
+          .col-md-6
+              .panel.panel-default
+                  .panel-heading
+                      span.glyphicon.glyphicon-check
+                      |  Vérification du compte
+                  .panel-body
+                      div(align="center")
+                          // Messages d'erreurs
+                          .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+                              p(ng-bind="erreurMsg")
+                          // Message de succès
+                          .alert.alert-success(align="center", name="successMsg", ng-if="!erreur")
+                              span(ng-bind="succesMsg")
+                              span
+                                a(href="/#/connexion") ici

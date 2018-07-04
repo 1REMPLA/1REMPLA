@@ -1,0 +1,98 @@
+extends ../../../../layouts/layout
+
+block content
+  // Titre de la page
+  script.
+          function showTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = false;
+          };
+
+          function hideTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = true;
+          };
+  title(ng-bind="pageTitle")
+  // Navigation dans "Mon compte"
+  ul.nav.nav-pills.nav-stacked.admin-menu.navigation
+      div
+          a.btn.btn-danger.btn-lg(type="button", href="#/profil/sites", ng-if="installe") Retour
+  h2(align="center")
+      b.titleProfil Mon Compte - Détails du lieu d'exercice
+  hr
+  // Profil site public
+  // Banière du Site (Image)
+  .divBaniereSite(align="center", ng-if="baniereok")
+      img.baniereSite(ng-src="{[{photo1Site}]}")
+  .row
+      div(ng-if="!notFound")
+          h2(align="center")
+              b.titleProfil(ng-bind="nom")
+          hr
+      .col-xs-2
+      .col-xs-4
+          div(ng-if="adresseok && adresse != 'null' && adresse != ''")
+              b Adresse du Site :
+              p(ng-bind="adresse")
+              br
+          b Ville :
+          p(ng-bind="ville")
+          br
+          b Code Postal :
+          p(ng-bind="codePostal")
+          br
+      .col-xs-6
+          b Téléphone du Site :
+          p(ng-bind="telephone")
+          br
+          div(ng-if="horairesok")
+              b Horaires :
+              p(ng-bind="horaires")
+              br
+          b Type de Site :
+          p(ng-bind="typeSite")
+          br
+      // Descritpion
+      hr
+      div(ng-if="descriptionok && description != 'null' && description != ''")
+          h2(align="center")
+              b.titleProfil Description
+          hr
+          br
+          p(ng-bind-html="description")
+          br
+      // Galerie photo
+      div(ng-if="galerieok")
+          h2(align="center")
+              b.titleProfil Galerie Photos
+          hr
+          .container
+              ng-image-gallery(images="images", methods="methods", thumbnails="true", thumb-size="185", inline="false", bubbles="true", bubble-size="20", img-bubbles="false", bg-close="false", piracy="false", img-anim="fadeup", conf="conf", on-open="opened();", on-close="closed();", on-delete="delete(img, cb)")
+
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel.modal-title Aide - Profil Installé
+              .modal-body
+                  videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="profilInstalleAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

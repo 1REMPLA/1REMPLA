@@ -1,0 +1,45 @@
+extends ../../../layouts/layout
+
+block content
+	style.
+			body {
+			background-image:
+			linear-gradient(
+			rgba(0, 0, 0, 0.4),
+			rgba(0, 0, 0, 0.4)
+			),
+			url(/images/accueil.jpeg);
+			background-attachment: fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+			background-position: bottom;
+			}
+			.panel-default {
+			opacity: 0.9;
+			margin-top:30px;
+			}
+			.form-group.last { margin-bottom:0px; }
+	// Titre de la page
+	title Administrateur
+	br
+	br
+	br
+	br
+	.container
+		.row
+			.col-md-3
+			.col-md-6
+				.panel.panel-default
+					.panel-heading
+						span.glyphicon.glyphicon-remove 
+						span &nbsp;Accès refusé    
+					.panel-body
+						div(align="center")
+						// Messages d'erreurs
+						.alert.alert-danger(align="center")
+							p Vous êtes administrateur
+							br
+							a(href="/#/")
+								p Retour à la page d'accueil

@@ -1,0 +1,71 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  .container
+      .jumbotron
+          .row
+              h2(align="center")
+                  b.titleProfil #{site.nomSite}
+              hr
+              .col-xs-6
+                  b Adresse du Site :
+                  p #{site.adresseSite}
+                  br
+                  b Ville :
+                  p #{site.villeSite}
+                  br
+                  b Code Postal :
+                  p #{site.codePostalSite}
+                  br
+              .col-xs-6
+                  b Téléphone du Site :
+                  p #{site.telSite}
+                  br
+                  if site.horaires
+                    b Horaires :
+                    p #{site.horaires}
+                  br
+                  b Type de Site :
+                  p #{typeSite.typeSite}
+                  br
+                  br
+                  br
+              if site.description
+                h2(align="center")
+                    b.titleProfil Description
+                hr
+                br
+                p #{site.description}
+                br
+                hr
+              if site.photos.length !== 0
+                h2(align="center")
+                    b.titleProfil Galerie Photo
+                hr
+                br
+                .container
+                  each photo in site.photos
+                    img.photoProfil(src=photo)
+                    span &nbsp;&nbsp;
+  .form-group(align="center")
+      a(href="/admin/dashboard/sites") Retour

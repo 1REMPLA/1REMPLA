@@ -1,0 +1,303 @@
+extends ../../layouts/layout
+
+block content
+  // Titre de la page
+  title(ng-bind="pageTitle")
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  // Message de succès
+  div(ng-if="succes")
+      br
+      .alert.alert-success(align="center")
+          p(ng-bind="succesMsg")
+  // Messages d'erreurs
+  div(ng-if="notFound")
+      br
+      .alert.alert-danger(align="center")
+          p(ng-bind="message")
+  div(ng-if="erreur")
+      br
+      .alert.alert-danger(align="center")
+          p(ng-bind="erreurMsg")
+  .form-group(ng-if="formulaire")
+      .divBaniereSite(ng-if="!notFound && baniereok")
+          img.baniereSite(ng-src="{[{site.photos[0]}]}")
+          hr
+      ul.nav.nav-tabs(ng-if="!notFound")
+          li
+              a.aTabAnnonce(href="#presentation", du-smooth-scroll="", duration="2000") Présentation
+          li(ng-if="annonceInstalle")
+              a.aTabAnnonce(href="#infosSite", du-smooth-scroll="", duration="2000") Informations du site
+          li(ng-if="annonceInstalle")
+              a.aTabAnnonce(href="#infosInstalle", du-smooth-scroll="", duration="2000") Informations de l'installé
+          li(ng-if="!annonceInstalle")
+              a.aTabAnnonce(href="#infosInstalle", du-smooth-scroll="", duration="2000") Informations du remplaçant
+          li(ng-if="!annonceInstalle && !admin && connecte")
+              a.aTabAnnonce(href="#zonesDispo", du-smooth-scroll="", duration="2000") Zones de disponibilité
+          li(ng-if="!annonceInstalle && connecte && !admin")
+              a.aTabAnnonce(href="#calendrier", du-smooth-scroll="", duration="2000") Calendrier
+          li(ng-if="confirmation")
+              a.aTabAnnonce(href="#contactRemplacant", du-smooth-scroll="", duration="2000") Contact
+          li(ng-if="confirmationI")
+              a.aTabAnnonce(href="#contactInstalle", du-smooth-scroll="", duration="2000") Contact
+      #presentation(ng-if="!notFound")
+          h2 Présentation de l'annonce
+          hr
+          i
+              h4 Spécialité recherchée : {[{specialite}]}
+          div(align="right", ng-if="!admin")
+            a(href="#/signaler/annonce/{[{_id}]}", style="color: #f14444;")
+              i.fa.fa-flag.fa-fw
+              small Signaler cette annonce
+          br
+      #infosSite(ng-if="!notFound")
+          div(ng-if="annonceInstalle")
+              h2 Informations du lieu d'exercice
+              hr
+              .container
+                  .jumbotron.jumbotron-annonce
+                      .row
+                          h2 {[{site.nomSite}]}
+                          hr
+                          br
+                          .col-xs-4
+                              b(ng-if="connecte && !admin") Adresse du lieu d'exercice :
+                              p(ng-if="connecte && !admin")
+                                span(ng-if="site.adresseSite != 'null' && site.adresseSite != ''") {[{site.adresseSite}]}&nbsp;-&nbsp;
+                                span {[{site.villeSite}]} {[{site.codePostalSite}]}
+                              b Type de lieu d'exercice : 
+                              p(ng-bind="typeSite")
+                          .col-xs-4
+                              div(ng-if="horairesok")
+                                  b Horaires du lieu d'exercice : 
+                                  p(ng-bind="site.horaires")
+                              b(ng-if="connecte && !admin") Téléphone du lieu d'exercice :
+                              p(ng-if="connecte && !admin", ng-bind="site.telSite")
+                      br
+                      div(ng-if="connecte && !admin")
+                          h3 Emplacement
+                          hr
+                          ui-gmap-google-map.angular-google-map-container-site(center="map.center", zoom="map.zoom")
+                            ui-gmap-marker(ng-repeat="m in map.markers", coords="m.coords", icon="m.icon", idkey="m.id", options="m.options", events="map.markersEvents")
+                          br
+                      div(ng-if="connecte && !admin && descriptionok && site.descSite != '' && site.descSite != 'null' && site.descSite != null && site.descSite != undefined")
+                          h3 Description
+                          hr
+                          .cadreInfo
+                              br
+                              p(ng-bind-html="site.descSite")
+                              br
+                      br
+                      div(ng-if="galerieok")
+                          h3 Galerie Photos
+                          hr
+                          .container
+                              ng-image-gallery(images="images", methods="methods", thumbnails="true", thumb-size="185", inline="false", bubbles="true", bubble-size="20", img-bubbles="false", bg-close="false", piracy="false", img-anim="fadeup", conf="conf", on-open="opened();", on-close="closed();", on-delete="delete(img, cb)")
+                      div(align="right", ng-if="!admin")
+                        a(href="#/signaler/site/{[{site._id}]}", style="color: #f14444;")
+                          i.fa.fa-flag.fa-fw
+                          small Signaler ce lieu d'exercice
+              br
+      #infosInstalle(ng-if="!notFound")
+          h2(ng-if="annonceInstalle") Informations de l'installé
+          h2(ng-if="!annonceInstalle") Informations du remplaçant
+          hr
+          .container
+              .jumbotron.jumbotron-annonce
+                  .row
+                      .col-xs-4(align="center")
+                          img.photoProfil(ng-src="{[{membreAnnonce.photoMembre}]}")
+                      h2 {[{membreAnnonce.nom}]} {[{membreAnnonce.prenom}]}
+                      br
+                      .col-xs-4
+                          b Spécialité : 
+                          p(ng-bind="specialite")
+                          
+                          div(ng-if="connecte && !admin")
+                              b Téléphone : 
+                              p(ng-bind="membreAnnonce.telMembre")
+                              div(ng-if="membreAnnonce.successeur && membreAnnonce.collaborateur")
+                                  p
+                                      | Recherche un collaborateur
+                      .col-xs-4(ng-if="connecte && !admin")
+                          b Adresse mail : 
+                          p(ng-bind="membreAnnonce.adresseMail")
+                          div(ng-if="membreAnnonce.successeur")
+                              p
+                                  | Recherche un successeur
+                          div(ng-if="!membreAnnonce.successeur && membreAnnonce.collaborateur")
+                              p
+                                  | Recherche un collaborateur
+                  br
+                  div(ng-if="connecte && !admin && biographieok && membreAnnonce.biographie != '' && membreAnnonce.biographie != 'null' && membreAnnonce.biographie != null && membreAnnonce.biographie != undefined")
+                      h3 Biographie
+                      hr
+                      .cadreInfo
+                          br
+                          p(ng-bind-html="membreAnnonce.biographie")
+                          br
+                  div(align="right", ng-if="!admin")
+                    a(href="#/signaler/membre/{[{membreAnnonce._id}]}", style="color: #f14444;")
+                      i.fa.fa-flag.fa-fw
+                      small Signaler ce membre
+          br
+      #zonesDispo(ng-if="!annonceInstalle && !notFound && !admin && connecte")
+          h2 Zones de disponibilité du remplaçant
+          hr
+          .row
+              .col-md-8
+                  ui-gmap-google-map.angular-google-map-container-zonesGeo(center="map.center", zoom="map.zoom")
+                      ui-gmap-circle(ng-repeat="circle in circles", ng-model="circlesModel", center="circle.center", radius="circle.radius", fill="circle.fill", stroke="circle.stroke", clickable="circle.clickable", editable="circle.clickable", draggable="circle.draggable", events="circle.events")
+                  br
+              .col-md-4
+                  #dashboard.panel.panel-danger
+                      .panel-heading
+                          h4.panel-title Zones de Disponibilité
+                      .panel-body
+                          table
+                              tr
+                                  th.col-md-3 #
+                                  th Ville (Code Postal) - Rayon du cercle
+                              tr(ng-repeat="location in locations")
+                                  td.col-md-3
+                                      br
+                                      p {[{location.indice+1}]}
+                                  td
+                                      br
+                                      p {[{location.ville}]} ({[{location.codePostal}]}) - {[{location.rayon}]} km
+      #calendrier(ng-if="!notFound && connecte && !admin", align="center")
+          h2(align="left") Calendrier
+          hr
+          .btn-group
+              button.btn.btn-danger(mwl-date-modifier="", date="viewDate", set-to-today="") Aujourd'hui
+          br
+          .container
+              .row
+                  .col-xs-1
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      button.btn.btn-outline-danger(mwl-date-modifier, date="viewDates.viewDate", decrement="calendarView")
+                          i.fa.fa-arrow-left.fa-pw
+                  .col-xs-5
+                      h2(align="center") {[{calendarTitle}]}
+                      br
+                      .calendrier
+                          mwl-calendar(view="calendarView", view-date="viewDates.viewDate", events="events", view-title="calendarTitle", cell-modifier="cellModifier(calendarCell)", on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)", on-timespan-click="timeSpanClicked(calendarDate)", on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)", on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd", slide-box-disabled="true", cell-is-open="true")
+                  .col-xs-5
+                      h2(align="center") {[{calendarTitle2}]}
+                      br
+                      .calendrier
+                          mwl-calendar(view="calendarView", view-date="viewDates.viewDate2", events="events", view-title="calendarTitle2", cell-modifier="cellModifier(calendarCell)", on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)", on-timespan-click="timeSpanClicked(calendarDate)", on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)", on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd", slide-box-disabled="true", cell-is-open="true")
+                  .col-xs-1
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      br
+                      button.btn.btn-outline-danger(mwl-date-modifier, date="viewDates.viewDate", increment="calendarView")
+                          i.fa.fa-arrow-right.fa-pw
+          br
+      .alert.alert-danger(ng-if="messageAnnonceRemplacant && remplacant", align="center")
+          p Pour contacter le remplaçant, vous devez être connecté en tant qu'installé.
+      .alert.alert-success(ng-if="confirmation && remplacant", align="center")
+          p
+              | Les dates que vous avez sélectionnées ont bien été prises en compte. Pour confirmer votre demande, veuillez remplir le formulaire ci-dessous.
+      .alert.alert-danger(ng-if="interdiction", align="center")
+          p Pour choisir des dates, vous devez être connecté en tant que remplaçant.
+      .alert.alert-danger(ng-if="interdictionDeja", align="center")
+          p L'installé a déjà choisi un remplaçant à cette date.
+      #contactRemplacant(ng-if="!notFound && confirmation && remplacant")
+          form(name="formulaireReponseInstalle", ng-submit="creationReponse(reponse)", novalidate)
+              h2 Contact
+              hr
+              label Date(s) sélectionnée(s) :
+              br
+              ul(ng-repeat="date in dates")
+                  li {[{date.jour}]} {[{date.mois}]} {[{date.annee}]}
+              br
+              label Message pour l'annonceur (facultatif) :
+              textarea.form-control(type="text", name="messageInstalle", ng-model="reponse.message", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{0,750}$/")
+              div(align="center", ng-if="formulaireReponseInstalle.messageInstalle.$invalid && formulaireReponseInstalle.messageInstalle.$touched")
+                  small Le message contient des caractères non supportés (entre 0 et 750 caractères)
+              br
+              div(align="center")
+                  button.btn.btn-danger(type="submit", ng-disabled="formulaireReponseInstalle.$invalid") Répondre à l'annonce
+      #contactInstalle(ng-if="!notFound && confirmationI && installe")
+          form(name="formulairePriseContact", ng-submit="priseDeContact(reponse)", novalidate)
+              h2 Contact
+              hr
+              label Message pour le remplaçant (facultatif) :
+              textarea.form-control(type="text", name="messageRemplacant", ng-model="reponse.message", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{0,750}$/")
+              div(align="center", ng-if="formulairePriseContact.messageRemplacant.$invalid && formulairePriseContact.messageRemplacant.$touched")
+                  small Le message contient des caractères non supportés (entre 0 et 750 caractères)
+              br
+              div(align="center")
+                  button.btn.btn-danger(type="submit", ng-disabled="formulairePriseContact.$invalid") Prendre contact
+  // Chargement...
+  div(align="center", name="load", ng-if="load")
+      span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+      |   Chargement...
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false", , ng-if="connecte")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel2.modal-title Aide - Recherche et réponse d'annonces
+              .modal-body
+                  videogular(vg-theme="rechercheReponseAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="rechercheReponseAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

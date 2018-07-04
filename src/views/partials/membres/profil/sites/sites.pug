@@ -1,0 +1,189 @@
+extends ../../../../layouts/layout
+
+block content
+  // Titre de la page
+  script.
+          function showTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = false;
+          };
+
+          function hideTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = true;
+          };
+  title(ng-bind="pageTitle")
+  // Navigation dans "Mon compte"
+  br
+  br
+  h2(align="center")
+      b.titleProfil Mon Compte - Lieu(x) d'exercice
+  hr
+  // Messages d'erreurs
+  .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+      p(ng-repeat="message in erreurMsg", ng-bind="message")
+  // Message de succès
+  .alert.alert-success(align="center", name="successMsg", ng-if="succes")
+      p(ng-bind="succesMsg")
+      br
+      a.btn.btn-success(type="button", href="#/profil/public") Voir mon Profil
+  .row
+      .col-md-3
+          ul.nav.nav-pills.nav-stacked.admin-menu
+              li
+                  a.underlineProfil(href="#/profil/public")
+                      i.fa.fa-address-card-o.fa-fw
+                      | Consulter mon Profil
+              li
+                  a.underlineProfil(href="#/profil/general")
+                      i.fa.fa-user-o.fa-fw
+                      | Modifier mes Informations
+              li
+                  a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Disponibilités
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+                      i.fa.fa-comments.fa-fw
+                      | Réponses à mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+                      i.fa.fa-comments.fa-fw
+                      | Mes Réponses
+              li
+                  a.underlineProfil(href="#/profil/motDePasse")
+                      i.fa.fa-key.fa-fw
+                      | Changer de Mot de Passe
+              li.active
+                  a.underlineProfil(href="#/profil/sites", ng-if="installe")
+                      i.fa.fa-home.fa-fw
+                      | Gérer mon(mes) Lieu(x) d'exercice
+              li
+                  a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+                      i.fa.fa-map-o.fa-fw
+                      | Gérer mes zones de disponibilité
+              li
+                  a.underlineProfil(href="#/profil/photo")
+                      i.fa.fa-id-badge.fa-fw
+                      | Changer ma Photo de Profil
+              li
+                  a.underlineProfil(href="#/profil/suppression")
+                      i.fa.fa-trash-o.fa-fw
+                      | Fermer mon Compte
+      .col-md-9
+          // Sites
+          form(name="formulaireSites", ng-submit="supprimerSite(site1, site2, site3)", ng-if="formulaire")
+              div(ng-if="site1ok")
+                  .col-md-6
+                      .thumbnail
+                          .imageSite
+                              img.photoSite(ng-src="{[{photo1Site1}]}")
+                          .caption
+                              span(name="idSite", ng-model="site1.idSite", ng-bind="site1._id", ng-if="false")
+                              h3(name="nomSite", ng-model="site1.nomSite", ng-bind="site1.nomSite")
+                              span(name="adresseSite", ng-model="site1.adresseSite", ng-if="adresseSite1 && site1.adresseSite != 'null' && site1.adresseSite != ''", ng-bind="site1.adresseSite")
+                              span(ng-if="adresseSite1 && site1.adresseSite != 'null' && site1.adresseSite != ''") &nbsp;-&nbsp;
+                              span(name="villeSite", ng-model="site1.villeSite", ng-bind="site1.villeSite")
+                              span ,&nbsp;
+                              span(name="codePostalSite", ng-model="site1.codePostalSite", ng-bind="site1.codePostalSite")
+                              br
+                              span(name="telSite", ng-model="site1.telSite", ng-bind="site1.telSite")
+                              br
+                              span(name="horairesSite", ng-model="site1.horairesSite", ng-if="horairesSite1", ng-bind="site1.horaires")
+                              br
+                              span(name="typeSite", ng-model="site1.typeSite", ng-bind="typeSite1")
+                              br
+                              br
+                              a.btn.btn-warning(type="button", href="#/profil/sites/id/{[{idSite1}]}/modification") Modifier
+                              span &nbsp;&nbsp;
+                              a.btn.btn-default(type="button", href="#/profil/sites/id/{[{idSite1}]}") Détails
+                              span &nbsp;&nbsp;
+                              button.btn.btn-danger(ng-click="suppSite1 = true", ng-disabled="!site2ok") Supprimer
+                  .col-md-6(ng-if="site2ok")
+                      .thumbnail
+                          .imageSite
+                              img.photoSite(ng-src="{[{photo1Site2}]}")
+                          .caption
+                              span(name="idSite", ng-model="site2.idSite", ng-bind="site2._id", ng-if="false")
+                              h3(name="nomSite", ng-model="site2.nomSite", ng-bind="site2.nomSite")
+                              span(name="adresseSite", ng-model="site2.adresseSite", ng-if="adresseSite2 && site2.adresseSite != 'null' && site2.adresseSite != ''", ng-bind="site2.adresseSite")
+                                span &nbsp;
+                              span(name="villeSite", ng-model="site2.villeSite", ng-bind="site2.villeSite")
+                              span ,&nbsp;
+                              span(name="codePostalSite", ng-model="site2.codePostalSite", ng-bind="site2.codePostalSite")
+                              br
+                              span(name="telSite", ng-model="site2.telSite", ng-bind="site2.telSite")
+                              br
+                              span(name="horairesSite", ng-model="site2.horairesSite", ng-if="horairesSite2", ng-bind="site2.horaires")
+                              br
+                              span(name="typeSite", ng-model="site2.typeSite", ng-bind="typeSite2")
+                              br
+                              br
+                              a.btn.btn-warning(type="button", href="#/profil/sites/id/{[{idSite2}]}/modification") Modifier
+                              span &nbsp;&nbsp;
+                              a.btn.btn-default(type="button", href="#/profil/sites/id/{[{idSite2}]}") Détails
+                              span &nbsp;&nbsp;
+                              button.btn.btn-danger(ng-click="suppSite2 = true", type="submit") Supprimer
+                  .col-md-6(ng-if="site3ok")
+                      .thumbnail
+                          .imageSite
+                              img.photoSite(ng-src="{[{photo1Site3}]}")
+                          .caption
+                              span(name="idSite", ng-model="site3.idSite", ng-bind="site3._id", ng-if="false")
+                              h3(name="nomSite", ng-model="site3.nomSite", ng-bind="site3.nomSite")
+                              span(name="adresseSite", ng-model="site3.adresseSite", ng-if="adresseSite3 && site3.adresseSite != 'null' && site3.adresseSite != ''", ng-bind="site3.adresseSite")
+                                span &nbsp;  
+                              span(name="villeSite", ng-model="site3.villeSite", ng-bind="site3.villeSite")
+                              span ,&nbsp;  
+                              span(name="codePostalSite", ng-model="site3.codePostalSite", ng-bind="site3.codePostalSite")
+                              br
+                              span(name="telSite", ng-model="site3.telSite", ng-bind="site3.telSite")
+                              br
+                              span(name="horairesSite", ng-model="site3.horairesSite", ng-if="horairesSite3", ng-bind="site3.horaires")
+                              br
+                              span(name="typeSite", ng-model="site3.typeSite", ng-bind="typeSite3")
+                              br
+                              br
+                              a.btn.btn-warning(type="button", href="#/profil/sites/id/{[{idSite3}]}/modification") Modifier
+                              span &nbsp;&nbsp;
+                              a.btn.btn-default(type="button", href="#/profil/sites/id/{[{idSite3}]}") Détails
+                              span &nbsp;&nbsp;
+                              button.btn.btn-danger(ng-click="suppSite3 = true", type="button") Supprimer
+                  .col-md-6(ng-if="creationok")
+                      .thumbnail(style="height: 460px;")
+                          a.btn.btn-danger(style="margin-left: 15%; margin-top: 55%;", type="submit", href="#/profil/sites/creation") Créer un nouveau lieu d'exercice
+  // Chargement...
+  div(align="center", name="load", ng-if="load")
+      span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+      |   Chargement...
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel.modal-title Aide - Profil Installé
+              .modal-body
+                  videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="profilInstalleAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

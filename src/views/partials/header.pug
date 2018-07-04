@@ -1,0 +1,55 @@
+nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+    .container
+        .navbar-header
+            img.navbar-brand.imgHeader(src="/images/logo.png")
+            a.navbar-brand(href="/#/") 1REMPLA
+            button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                i.fa.fa-bars.fa-pw
+        
+        .navbar-right
+          #navbarSupportedContent.collapse.navbar-collapse
+                ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="#/profil/calendrier/{[{idSite1}]}", ng-if="connecte && installe") Poster une annonce
+                    li.active
+                        a(href="#/profil/disponibilite", ng-if="connecte && remplacant") Établir une disponibilité
+                    li.active
+                        a(href="#/connexion", ng-if="!connecte") Poster une annonce
+                    li.active(ng-if="!connecte")
+                        a(href="/#/connexion") Se connecter
+                    li.active(ng-if="!connecte")
+                        a(href="/#/inscription") S'enregistrer
+                    li.active(ng-if="admin")
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active(ng-if="admin")
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown(ng-if="connecte && !admin")
+                        a.dropdown-toggle(data-toggle="dropdown", role="button", aria-expanded="false")
+                            | Mon Compte 
+                            span.caret
+                        ul.dropdown-menu(role="menu")
+                            li
+                                a(href="/#/profil/public") Mon Profil
+                            li
+                                a(href="/#/profil/general") Informations Personnelles
+                            li
+                                a(href="/#/profil/calendrier/{[{idSite1}]}", ng-if="installe") Gérer mes annonces
+                            li
+                                a(href="/#/profil/disponibilite", ng-if="remplacant") Gérer mes disponibilités
+                            li
+                                a(href="/#/profil/motDePasse") Mot de Passe
+                            li
+                                a(href="/#/profil/sites", ng-if="installe") Lieu(x) d'exercice
+                            li
+                                a(href="/#/profil/zonesDisponibilite", ng-if="remplacant") Gérer mes zones de disponibilité
+                            li
+                                a(href="/#/profil/reponses", ng-if="installe") Réponses à mes Annonces
+                            li
+                                a(href="/#/profil/reponses", ng-if="remplacant") Mes Réponses
+                            li
+                                a(href="/#/profil/photo") Photo de Profil
+                            li
+                                a(href="/#/profil/suppression") Fermeture du Compte
+                            li.divider
+                            li
+                                a.deconnexionBtn(ng-click="deconnexion()") Se Déconnecter

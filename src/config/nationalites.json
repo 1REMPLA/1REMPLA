@@ -1,0 +1,589 @@
+{
+  "nationalites": [
+    {
+      "libelle": "Afghane"
+    },
+    {
+      "libelle": "Albanaise"
+    },
+    {
+      "libelle": "Algérienne"
+    },
+    {
+      "libelle": "Allemande"
+    },
+    {
+      "libelle": "Américaine"
+    },
+    {
+      "libelle": "Andorrane"
+    },
+    {
+      "libelle": "Angolaise"
+    },
+    {
+      "libelle": "Antiguayenne"
+    },
+    {
+      "libelle": "Argentine"
+    },
+    {
+      "libelle": "Arménienne"
+    },
+    {
+      "libelle": "Australienne"
+    },
+    {
+      "libelle": "Autrichienne"
+    },
+    {
+      "libelle": "Azerbaïdjanaise"
+    },
+    {
+      "libelle": "Bahaméenne"
+    },
+    {
+      "libelle": "Bahreïnienne"
+    },
+    {
+      "libelle": "Bangladaise"
+    },
+    {
+      "libelle": "Barbadienne"
+    },
+    {
+      "libelle": "Belge"
+    },
+    {
+      "libelle": "Bélizienne"
+    },
+    {
+      "libelle": "Bhoutanaise"
+    },
+    {
+      "libelle": "Biélorusse"
+    },
+    {
+      "libelle": "Birmane"
+    },
+    {
+      "libelle": "Bissaoguinéenne"
+    },
+    {
+      "libelle": "Bolivienne"
+    },
+    {
+      "libelle": "Bosnienne"
+    },
+    {
+      "libelle": "Botswanaise"
+    },
+    {
+      "libelle": "Brésilienne"
+    },
+    {
+      "libelle": "Britannique"
+    },
+    {
+      "libelle": "Brunéienne"
+    },
+    {
+      "libelle": "Bulgare"
+    },
+    {
+      "libelle": "Burkinabé"
+    },
+    {
+      "libelle": "Burundaise"
+    },
+    {
+      "libelle": "Béninoise"
+    },
+    {
+      "libelle": "Cambodgienne"
+    },
+    {
+      "libelle": "Camerounaise"
+    },
+    {
+      "libelle": "Canadienne"
+    },
+    {
+      "libelle": "Cap-Verdienne"
+    },
+    {
+      "libelle": "Centrafricaine"
+    },
+    {
+      "libelle": "Chilienne"
+    },
+    {
+      "libelle": "Chinoise"
+    },
+    {
+      "libelle": "Christophienne"
+    },
+    {
+      "libelle": "Chypriote"
+    },
+    {
+      "libelle": "Colombienne"
+    },
+    {
+      "libelle": "Comorienne"
+    },
+    {
+      "libelle": "Congolaise"
+    },
+    {
+      "libelle": "Congolaise (RDC)"
+    },
+    {
+      "libelle": "Costaricienne"
+    },
+    {
+      "libelle": "Croate"
+    },
+    {
+      "libelle": "Cubaine"
+    },
+    {
+      "libelle": "Danoise"
+    },
+    {
+      "libelle": "Djiboutienne"
+    },
+    {
+      "libelle": "Dominicaine"
+    },
+    {
+      "libelle": "Dominiquaise"
+    },
+    {
+      "libelle": "Egyptienne"
+    },
+    {
+      "libelle": "Emirienne"
+    },
+    {
+      "libelle": "Equatoguinéenne"
+    },
+    {
+      "libelle": "Equatorienne"
+    },
+    {
+      "libelle": "Erythréenne"
+    },
+    {
+      "libelle": "Espagnole"
+    },
+    {
+      "libelle": "Estonienne"
+    },
+    {
+      "libelle": "Ethiopienne"
+    },
+    {
+      "libelle": "Fidjienne"
+    },
+    {
+      "libelle": "Finlandaise"
+    },
+    {
+      "libelle": "Française"
+    },
+    {
+      "libelle": "Gabonaise"
+    },
+    {
+      "libelle": "Gambienne"
+    },
+    {
+      "libelle": "Ghanéenne"
+    },
+    {
+      "libelle": "Géorgienne"
+    },
+    {
+      "libelle": "Grenadienne"
+    },
+    {
+      "libelle": "Grecque"
+    },
+    {
+      "libelle": "Guatémaltèque"
+    },
+    {
+      "libelle": "Guinéenne"
+    },
+    {
+      "libelle": "Guyanienne"
+    },
+    {
+      "libelle": "Haïtienne"
+    },
+    {
+      "libelle": "Hondurienne"
+    },
+    {
+      "libelle": "Hongroise"
+    },
+    {
+      "libelle": "Indienne"
+    },
+    {
+      "libelle": "Indonésienne"
+    },
+    {
+      "libelle": "Irakienne"
+    },
+    {
+      "libelle": "Iranienne"
+    },
+    {
+      "libelle": "Irlandaise"
+    },
+    {
+      "libelle": "Islandaise"
+    },
+    {
+      "libelle": "Israélienne"
+    },
+    {
+      "libelle": "Italienne"
+    },
+    {
+      "libelle": "Ivoirienne"
+    },
+    {
+      "libelle": "Jamaïquaine"
+    },
+    {
+      "libelle": "Japonaise"
+    },
+    {
+      "libelle": "Jordanienne"
+    },
+    {
+      "libelle": "Palestinienne"
+    },
+    {
+      "libelle": "Kazakhstanais"
+    },
+    {
+      "libelle": "Kényane"
+    },
+    {
+      "libelle": "Kirghize"
+    },
+    {
+      "libelle": "Kiribatienne"
+    },
+    {
+      "libelle": "Kosovare"
+    },
+    {
+      "libelle": "Koweïtienne"
+    },
+    {
+      "libelle": "Laotienne"
+    },
+    {
+      "libelle": "Lesothienne"
+    },
+    {
+      "libelle": "Lettone"
+    },
+    {
+      "libelle": "Libanaise"
+    },
+    {
+      "libelle": "Libérienne"
+    },
+    {
+      "libelle": "Libyenne"
+    },
+    {
+      "libelle": "Liechtensteinoise"
+    },
+    {
+      "libelle": "Lituanienne"
+    },
+    {
+      "libelle": "Lucienne"
+    },
+    {
+      "libelle": "Luxembourgeoise"
+    },
+    {
+      "libelle": "Macédonienne"
+    },
+    {
+      "libelle": "Malaisienne"
+    },
+    {
+      "libelle": "Malawienne"
+    },
+    {
+      "libelle": "Maldivienne"
+    },
+    {
+      "libelle": "Malgache"
+    },
+    {
+      "libelle": "Malienne"
+    },
+    {
+      "libelle": "Maltaise"
+    },
+    {
+      "libelle": "Marocaine"
+    },
+    {
+      "libelle": "Marinaise"
+    },
+    {
+      "libelle": "Marshallaise"
+    },
+    {
+      "libelle": "Mauricienne"
+    },
+    {
+      "libelle": "Mauritanienne"
+    },
+    {
+      "libelle": "Mexicaine"
+    },
+    {
+      "libelle": "Micronésienne"
+    },
+    {
+      "libelle": "Moldave"
+    },
+    {
+      "libelle": "Monégasque"
+    },
+    {
+      "libelle": "Mongole"
+    },
+    {
+      "libelle": "Monténégrine"
+    },
+    {
+      "libelle": "Mozambicaine"
+    },
+    {
+      "libelle": "Namibienne"
+    },
+    {
+      "libelle": "Nauruane"
+    },
+    {
+      "libelle": "Nicaraguayenne"
+    },
+    {
+      "libelle": "Nigériane"
+    },
+    {
+      "libelle": "Nigérienne"
+    },
+    {
+      "libelle": "Nord-Coréenne"
+    },
+    {
+      "libelle": "Norvégienne"
+    },
+    {
+      "libelle": "Néerlandaise"
+    },
+    {
+      "libelle": "Néo-Zélandaise"
+    },
+    {
+      "libelle": "Népalaise"
+    },
+    {
+      "libelle": "Omanaise"
+    },
+    {
+      "libelle": "Ougandaise"
+    },
+    {
+      "libelle": "Ouzbèke"
+    },
+    {
+      "libelle": "Pakistanaise"
+    },
+    {
+      "libelle": "Palaoise"
+    },
+    {
+      "libelle": "Panaméenne"
+    },
+    {
+      "libelle": "Papouasienne"
+    },
+    {
+      "libelle": "Paraguayenne"
+    },
+    {
+      "libelle": "Philippine"
+    },
+    {
+      "libelle": "Polonaise"
+    },
+    {
+      "libelle": "Portugaise"
+    },
+    {
+      "libelle": "Péruvienne"
+    },
+    {
+      "libelle": "Qatarienne"
+    },
+    {
+      "libelle": "Roumaine"
+    },
+    {
+      "libelle": "Russe"
+    },
+    {
+      "libelle": "Rwandaise"
+    },
+    {
+      "libelle": "Tchèque"
+    },
+    {
+      "libelle": "Salomonaise"
+    },
+    {
+      "libelle": "Salvadorienne"
+    },
+    {
+      "libelle": "Samoene"
+    },
+    {
+      "libelle": "Santoméenne"
+    },
+    {
+      "libelle": "Saoudienne"
+    },
+    {
+      "libelle": "Sénégalaise"
+    },
+    {
+      "libelle": "Serbe"
+    },
+    {
+      "libelle": "Seychelloise"
+    },
+    {
+      "libelle": "Sierraléonaise"
+    },
+    {
+      "libelle": "Singapourienne"
+    },
+    {
+      "libelle": "Slovaque"
+    },
+    {
+      "libelle": "Slovène"
+    },
+    {
+      "libelle": "Somalienne"
+    },
+    {
+      "libelle": "Soudanaise"
+    },
+    {
+      "libelle": "Srilankaise"
+    },
+    {
+      "libelle": "Sudafricaine"
+    },
+    {
+      "libelle": "Sud-Coréenne"
+    },
+    {
+      "libelle": "Suisse"
+    },
+    {
+      "libelle": "Surinamaise"
+    },
+    {
+      "libelle": "Suédoise"
+    },
+    {
+      "libelle": "Swazie"
+    },
+    {
+      "libelle": "Syrienne"
+    },
+    {
+      "libelle": "Tadjike"
+    },
+    {
+      "libelle": "Tanzanienne"
+    },
+    {
+      "libelle": "Taïwanaise"
+    },
+    {
+      "libelle": "Tchadienne"
+    },
+    {
+      "libelle": "Thaïlandaise"
+    },
+    {
+      "libelle": "Timoraise"
+    },
+    {
+      "libelle": "Togolaise"
+    },
+    {
+      "libelle": "Tongienne"
+    },
+    {
+      "libelle": "Trinidadienne"
+    },
+    {
+      "libelle": "Tunisienne"
+    },
+    {
+      "libelle": "Turkmène"
+    },
+    {
+      "libelle": "Turque"
+    },
+    {
+      "libelle": "Tuvaluane"
+    },
+    {
+      "libelle": "Ukrainienne"
+    },
+    {
+      "libelle": "Uruguayenne"
+    },
+    {
+      "libelle": "Vanuataise"
+    },
+    {
+      "libelle": "Vénézuélienne"
+    },
+    {
+      "libelle": "Vietnamienne"
+    },
+    {
+      "libelle": "Vincentaise"
+    },
+    {
+      "libelle": "Yéménite"
+    },
+    {
+      "libelle": "Zambienne"
+    },
+    {
+      "libelle": "Zimbabwéenne"
+    }
+  ]
+}

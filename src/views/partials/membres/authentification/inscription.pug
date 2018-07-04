@@ -1,0 +1,416 @@
+extends ../../../layouts/layout
+
+block content
+  // Titre de la page
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  title(ng-bind="pageTitle")
+  h2.page-header(ng-bind="title")
+  // Choix du profil du membre
+  .choixProfil(align="center", ng-if="choixProfil")
+      h3 Choisissez votre profil :
+      button.btn.btn-danger.btn-responsive(type="button", ng-click="installeFct()") Installé
+      button.btn.btn-danger.btn-responsive(type="button", ng-click="remplacantFct()") Remplaçant
+      br
+      br
+      a(href="#/connexion") Déjà un compte ? Se connecter
+  hr
+  // Formulaire d'inscription
+  form(name="formulaireInscription", ng-submit="inscriptionMembre(membre)", ng-if="installe || remplacant", novalidate="")
+      div(style="display:none")
+          label Type
+          br
+          input.form-control(type="text", name="paysMembre", ng-model="membre.type", ng-value="type", disabled="")
+      // Textes de présentation des formulaires
+      div(align="center")
+          h3(ng-if="installe") Formulaire pour s'inscrire en tant qu'installé
+          h3(ng-if="remplacant") Formulaire pour s'inscrire en tant que remplaçant
+          hr
+      // Informations personnelles
+      .container-fluid
+          center
+              h2 Informations personnelles
+          small * : Champs obligatoires
+          .row
+              div(style="margin-left: 15px")
+                  .form-group
+                      label Genre
+                        span(style="color: red;") *
+                      br
+                      input(type="radio", value="Homme", name="genre", ng-model="membre.genre", ng-required="true")
+                      |   Homme  
+                      input(type="radio", value="Femme", name="genre", ng-model="membre.genre", ng-required="true")
+                      |   Femme  
+                      input(type="radio", value="Autre", name="genre", ng-model="membre.genre", ng-required="true")
+                      |   Autre
+              .col-xs-6
+                  //- label Numéro Adéli
+                  //-     span(ng-if="installe" style="color: red;") *
+                  //- input.form-control(type="text", name="numeroAdeli", placeholder="Numéro Adéli", ng-model="membre.numeroAdeli", ng-pattern="/^[0-9]{5,15}$/", ng-required="installe")
+                  //- div(align="center", ng-if="formulaireInscription.numeroAdeli.$invalid && formulaireInscription.numeroAdeli.$touched")
+                  //-     small Insérez un numéro Adéli valide (Entre 5 et 15 chiffres)
+                  //- br(ng-if="!formulaireInscription.numeroAdeli.$invalid || !formulaireInscription.numeroAdeli.$touched")
+                  label Nom
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="nom", placeholder="Nom", ng-model="membre.nom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.nom.$invalid && formulaireInscription.nom.$touched")
+                      small Insérez un nom (entre 1 et 48 caractères)
+                  br(ng-if="!formulaireInscription.nom.$invalid || !formulaireInscription.nom.$touched")
+                  label Prénom
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="prenom", placeholder="Prénom", ng-model="membre.prenom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.prenom.$invalid && formulaireInscription.prenom.$touched")
+                      small Insérez un prénom (entre 1 et 48 caractères)
+                  br(ng-if="!formulaireInscription.prenom.$invalid || !formulaireInscription.prenom.$touched")
+                  label Adresse mail
+                    span(style="color: red;") *
+                  input.form-control(type="email", name="email", placeholder="Adresse mail", ng-model="membre.email", ng-required="true", ng-pattern="/^[a-z0-9_-]+(\.[a-z0-9_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/")
+                  div(align="center", ng-if="formulaireInscription.email.$invalid && formulaireInscription.email.$touched")
+                      small Insérez une adresse mail valide
+                  br(ng-if="!formulaireInscription.email.$invalid || !formulaireInscription.email.$touched")
+                  label Confirmer l'adresse mail
+                    span(style="color: red;") *
+                  input.form-control(type="email", name="email2", placeholder="Confirmer l'adresse mail", ng-model="membre.email2", ng-pattern="membre.email", ng-paste="$event.preventDefault();", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.email2.$invalid && formulaireInscription.email2.$touched")
+                      small Confirmez votre adresse mail
+                  br(ng-if="!formulaireInscription.email2.$invalid || !formulaireInscription.email2.$touched")
+                  label Mot de passe
+                    span(style="color: red;") *
+                  input.form-control(type="password", name="motDePasse", placeholder="Mot de passe", ng-model="membre.motDePasse", ng-pattern="/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{7,}/", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.motDePasse.$invalid && formulaireInscription.motDePasse.$touched")
+                      small Insérez un mot de passe (Au moins 7 caractères contenant au moins une minuscule, une majuscule et un chiffre)
+                  br(ng-if="!formulaireInscription.motDePasse.$invalid || !formulaireInscription.motDePasse.$touched")
+                  label Confirmer le mot de passe
+                    span(style="color: red;") *
+                  input.form-control(type="password", name="motDePasse2", placeholder="Confrmer le mot de passe", ng-model="membre.motDePasse2", ng-pattern="membre.motDePasse", ng-paste="$event.preventDefault()", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.motDePasse2.$invalid && formulaireInscription.motDePasse2.$touched")
+                      small Confirmez votre mot de passe
+                  br(ng-if="!formulaireInscription.motDePasse2.$invalid || !formulaireInscription.motDePasse2.$touched")
+                  div(ng-if="installe")
+                      .left.checkbox
+                          label
+                              input(type="checkbox", ng-model="membre.successeur")
+                              |  Recherche un successeur
+                      .middle   
+                      .left.checkbox
+                          label
+                              input(type="checkbox", ng-model="membre.collaborateur")
+                              |  Recherche un collaborateur
+              .col-xs-6
+                  label Insérer votre adresse postale personnelle
+                  .input-group
+                      input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="place", options="options", details="details", placeholder="Entrez une adresse postale", name="place")
+                      span.input-group-btn
+                          button.btn.btn-default(type="button", ng-click="adresse(details)") Rechercher
+                  div(align="center")
+                      br(ng-if="!formulaireInscription.place.$touched || adresseVal")
+                      small(ng-if="formulaireInscription.place.$touched && !adresseVal") Insérez une adresse contenant au moins une ville et un code postal
+                  label Adresse personnelle
+                  input.form-control(ng-disabled="adresseDisableMembre", type="text", name="adresseMembre", placeholder="Adresse personnelle", ng-model="membre.adresseMembre", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/")
+                  div(align="center", ng-if="formulaireInscription.adresseMembre.$invalid && formulaireInscription.adresseMembre.$touched")
+                      small Insérez une adresse personnelle (entre 0 et 100 caractères)
+                  br(ng-if="!formulaireInscription.adresseMembre.$invalid || !formulaireInscription.adresseMembre.$touched")
+                  .left
+                      label Ville
+                        span(style="color: red;") *
+                      input.form-control(ng-disabled="adresseDisableMembre", type="text", name="villeMembre", placeholder="Ville", ng-model="membre.villeMembre", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                      div(align="center", ng-if="formulaireInscription.villeMembre.$invalid && formulaireInscription.villeMembre.$touched")
+                          small Insérez une ville (entre 1 et 48 caractères)
+                      br(ng-if="!formulaireInscription.villeMembre.$invalid || !formulaireInscription.villeMembre.$touched")
+                  .middle   
+                  .left
+                      label Code Postal
+                        span(style="color: red;") *
+                      input.form-control(ng-disabled="adresseDisableMembre", type="text", name="codePostalMembre", placeholder="Code Postal", ng-model="membre.codePostalMembre", ng-pattern="/^[0-9]{5}$/", ng-required="true")
+                      div(align="center", ng-if="formulaireInscription.codePostalMembre.$invalid && formulaireInscription.codePostalMembre.$touched")
+                          small Insérez un code postal valide (5 chiffres)
+                      br(ng-if="!formulaireInscription.codePostalMembre.$invalid || !formulaireInscription.codePostalMembre.$touched")
+                  center
+                      label Insérer manuellement son adresse&nbsp;&nbsp;
+                      button.btn.btn-default(type="button", ng-click="adresseChange()", ng-if="adresseDisableMembre") Déverrouiller les champs
+                      button.btn.btn-default(type="button", ng-click="adresseChange()", ng-if="!adresseDisableMembre") Verrouiller les champs
+                  hr
+                  label Téléphone personnel
+                    span(style="color: red;") *
+                  input.form-control(type="tel", name="telMembre", placeholder="Téléphone personnel", ng-model="membre.telMembre", ng-pattern="/^0[0-9]{9}$/", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.telMembre.$invalid && formulaireInscription.telMembre.$touched")
+                      small Insérez un numéro de téléphone valide
+                  br(ng-if="!formulaireInscription.telMembre.$invalid || !formulaireInscription.telMembre.$touched")
+                  label Spécialité
+                    span(style="color: red;") *
+                  select.form-control(name="specialite", ng-model="membre.specialite", ng-options="specialite.typeSpecialite for specialite in specialites", ng-required="true")
+                  div(align="center", ng-if="formulaireInscription.specialite.$invalid && formulaireInscription.specialite.$touched")
+                      small Sélectionnez une spécialité
+                  br(ng-if="!formulaireInscription.specialite.$invalid || !formulaireInscription.specialite.$touched")
+                  label Photo de profil - 
+                    small 5MB maximum
+                  input(type="file", name="photoMembre", ngf-select, ng-model="membre.photoMembre", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile) 
+                  div(align="center", ng-if="formulaireInscription.photoMembre.$invalid && formulaireInscription.photoMembre.$touched && !formulaireInscription.photoMembre.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireInscription.photoMembre.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br(ng-if="!formulaireInscription.photoMembre.$invalid || !formulaireInscription.photoMembre.$touched")
+                  div(ng-if="installe")
+                  //-     .left.checkbox
+                  //-         label
+                  //-             input(type="checkbox", ng-model="membre.successeur")
+                  //-             |  Recherche un successeur
+                  //-     .middle   
+                  //-     .left.checkbox
+                  //-         label
+                  //-             input(type="checkbox", ng-model="membre.collaborateur")
+                  //-             |  Recherche un collaborateur
+      // Lieux d'exercices
+      // Lieu d'exercice 1
+      .container-fluid(ng-if="installe")
+          center
+              h2 Lieux d'exercice
+          br
+          .row
+              h3 Lieu d'exercice n°1
+              br
+              .col-xs-6
+                  label Nom du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="nomSite1", placeholder="Nom du lieu d'exercice", ng-model="membre.nomSite1", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,100}$/", ng-required="installe")
+                  div(align="center", ng-if="formulaireInscription.nomSite1.$invalid && formulaireInscription.nomSite1.$touched")
+                      small Insérez un nom de lieu (entre 1 et 100 caractères)
+                  br(ng-if="!formulaireInscription.nomSite1.$invalid || !formulaireInscription.nomSite1.$touched")
+                  label Insérer l'adresse postale du lieu d'exercice
+                  .input-group
+                      input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="sitePlace1", options="options", details="detailsSite1", placeholder="Entrez une adresse postale", name="sitePlace1")
+                      span.input-group-btn
+                          button.btn.btn-default(type="button", ng-click="adresseSite1(detailsSite1)") Rechercher
+                  div(align="center")
+                      br(ng-if="!formulaireInscription.sitePlace1.$touched || adresseSite1Val")
+                      small(ng-if="formulaireInscription.sitePlace1.$touched && !adresseSite1Val") Insérez une adresse contenant au moins une ville et un code postal
+                  label Adresse du lieu d'exercice
+                  input.form-control(disabled="true", type="text", name="adresseSite1", placeholder="Adresse du lieu d'exercice", ng-model="membre.adresseSite1", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/")
+                  br
+                  .left
+                      label Ville du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="villeSite1", placeholder="Ville du lieu d'exercice", ng-model="membre.villeSite1", ng-required="installe", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/")
+                      br
+                  .middle   
+                  .left
+                      label Code Postal du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="codePostalSite1", placeholder="Code Postal du lieu d'exercice", ng-model="membre.codePostalSite1", ng-pattern="/^[0-9]{5}$/", ng-required="installe")
+                      br
+                  br
+              .col-xs-6
+                  label Téléphone du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="tel", name="telSite1", placeholder="Téléphone du lieu d'exercice", ng-model="membre.telSite1", ng-pattern="/^0[0-9]{9}$/", ng-required="installe")
+                  div(align="center", ng-if="formulaireInscription.telSite1.$invalid && formulaireInscription.telSite1.$touched")
+                      small Insérez un numéro de téléphone de lieu valide
+                  br(ng-if="!formulaireInscription.telSite1.$invalid || !formulaireInscription.telSite1.$touched")
+                  label Horaires du lieu d'exercice
+                  input.form-control(type="text", name="horairesSite1", placeholder="Horaires du lieu d'exercice", ng-model="membre.horairesSite1", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù ]{0,48}$/")
+                  div(align="center", ng-if="formulaireInscription.horairesSite1.$invalid && formulaireInscription.horairesSite1.$touched")
+                      small Insérez des horaires correctes (entre 0 et 48 caractères)
+                  br(ng-if="!formulaireInscription.horairesSite1.$invalid || !formulaireInscription.horairesSite1.$touched")
+                  label Type de lieu d'exercice
+                    span(style="color: red;") *
+                  select.form-control(name="typeSite1", ng-model="membre.typeSite1", ng-options="typeSite.typeSite for typeSite in typeSites", ng-required="installe")
+                  div(align="center", ng-if="formulaireInscription.typeSite1.$invalid && formulaireInscription.typeSite1.$touched")
+                      small Sélectionnez un type de lieu d'exercice
+                  br(ng-if="!formulaireInscription.typeSite1.$invalid || !formulaireInscription.typeSite1.$touched")
+                  label Photo du lieu d'exercice (Bannière) - 
+                    small 5MB maximum
+                  input(type="file", name="photoSite1", ngf-select="", ng-model="membre.photoSite1", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile)
+                  div(align="center", ng-if="formulaireInscription.photoSite1.$invalid && formulaireInscription.photoSite1.$touched && !formulaireInscription.photoSite1.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireInscription.photoSite1.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br(ng-if="!formulaireInscription.photoSite1.$invalid || !formulaireInscription.photoSite1.$touched")
+                  div(align="center")
+                      button.btn.btn-danger(type="button", ng-hide="site2", ng-click="ajoutDeuxiemeSite()") Ajouter un deuxième lieu d'exercice
+          br
+          // Lieu d'exercice 2
+          .row(ng-if="site2")
+              h3 Lieu d'exercice n°2
+              br
+              .col-xs-6
+                  label Nom du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="nomSite2", placeholder="Nom du lieu d'exercice", ng-model="membre.nomSite2", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,100}$/", ng-required="site2")
+                  div(align="center", ng-if="formulaireInscription.nomSite2.$invalid && formulaireInscription.nomSite2.$touched")
+                      small Insérez un nom de lieu (entre 1 et 100 caractères)
+                  br(ng-if="!formulaireInscription.nomSite2.$invalid || !formulaireInscription.nomSite2.$touched")
+                  label Insérer l'adresse postale du lieu d'exercice
+                  .input-group
+                      input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="sitePlace2", options="options", details="detailsSite2", placeholder="Entrez une adresse postale", name="sitePlace2")
+                      span.input-group-btn
+                          button.btn.btn-default(type="button", ng-click="adresseSite2(detailsSite2)") Rechercher
+                  div(align="center")
+                      br(ng-if="!formulaireInscription.sitePlace2.$touched  || adresseSite2Val")
+                      small(ng-if="formulaireInscription.sitePlace2.$touched  && !adresseSite2Val") Insérez une adresse contenant au moins une ville et un code postal
+                  label Adresse du lieu d'exercice
+                  input.form-control(disabled="true", type="text", name="adresseSite2", placeholder="Adresse du lieu d'exercice", ng-model="membre.adresseSite2", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/")
+                  br
+                  .left
+                      label Ville du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="villeSite2", placeholder="Ville du lieu d'exercice", ng-model="membre.villeSite2", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="site2")
+                      br
+                  .middle   
+                  .left
+                      label Code Postal du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="codePostalSite2", placeholder="Code Postal du lieu d'exercice", ng-model="membre.codePostalSite2", ng-pattern="/^[0-9]{5}$/", ng-required="site2")
+                      br
+                  br
+              .col-xs-6
+                  label Téléphone du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="telSite2", placeholder="Téléphone du lieu d'exercice", ng-model="membre.telSite2", ng-pattern="/^0[0-9]{9}$/", ng-required="site2")
+                  div(align="center", ng-if="formulaireInscription.telSite2.$invalid && formulaireInscription.telSite2.$touched")
+                      small Insérez un numéro de téléphone de lieu valide
+                  br(ng-if="!formulaireInscription.telSite2.$invalid || !formulaireInscription.telSite2.$touched")
+                  label Horaires du lieu d'exercice
+                  input.form-control(type="text", name="horairesSite2", placeholder="Horaires du lieu d'exercice", ng-model="membre.horairesSite2", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù ]{0,48}$/")
+                  div(align="center", ng-if="formulaireInscription.horairesSite2.$invalid && formulaireInscription.horairesSite2.$touched")
+                      small Insérez des horaires correctes (entre 0 et 48 caractères)
+                  br(ng-if="!formulaireInscription.horairesSite2.$invalid || !formulaireInscription.horairesSite2.$touched")
+                  label Type de lieu d'exercice
+                    span(style="color: red;") *
+                  select.form-control(name="typeSite2", ng-model="membre.typeSite2", ng-options="typeSite.typeSite for typeSite in typeSites", ng-required="site2")
+                  div(align="center", ng-if="formulaireInscription.typeSite2.$invalid && formulaireInscription.typeSite2.$touched")
+                      small Sélectionnez un type de lieu d'exercice
+                  br(ng-if="!formulaireInscription.typeSite2.$invalid || !formulaireInscription.typeSite2.$touched")
+                  label Photo du lieu d'exercice (Bannière) - 
+                    small 5MB maximum
+                  input(type="file", name="photoSite2", ngf-select="", ng-model="membre.photoSite2", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile)
+                  div(align="center", ng-if="formulaireInscription.photoSite2.$invalid && formulaireInscription.photoSite2.$touched && !formulaireInscription.photoSite2.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireInscription.photoSite2.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br(ng-if="!formulaireInscription.photoSite2.$invalid || !formulaireInscription.photoSite2.$touched")
+                  div(align="center")
+                      button.btn.btn-danger(type="button", ng-hide="site3", ng-click="ajoutTroisiemeSite()") Ajouter un troisième lieu d'exercice
+                      span &nbsp;&nbsp;
+                      button.btn.btn-danger(type="button", ng-hide="site3", ng-click="suppDeuxiemeSite()") Supprimer ce lieu d'exercice
+          br
+          // Lieu d'exercice 3
+          .row(ng-if="site3")
+              h3 Lieu d'exercice n°3
+              br
+              .col-xs-6
+                  label Nom du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="nomSite3", placeholder="Nom du lieu d'exercice", ng-model="membre.nomSite3", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,100}$/", ng-required="site3")
+                  div(align="center", ng-if="formulaireInscription.nomSite3.$invalid && formulaireInscription.nomSite3.$touched")
+                      small Insérez un nom de lieu (entre 1 et 100 caractères)
+                  br(ng-if="!formulaireInscription.nomSite3.$invalid || !formulaireInscription.nomSite3.$touched")
+                  label Insérer l'adresse postale du lieu d'exercice
+                  .input-group
+                      input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="sitePlace3", options="options", details="detailsSite3", placeholder="Entrez une adresse postale", name="sitePlace3", ng-pattern="/.+,.+/")
+                      span.input-group-btn
+                          button.btn.btn-default(type="button", ng-click="adresseSite3(detailsSite3)") Rechercher
+                  div(align="center")
+                      br(ng-if="!formulaireInscription.sitePlace3.$touched  || adresseSite3Val")
+                      small(ng-if="formulaireInscription.sitePlace3.$touched  && !adresseSite3Val") Insérez une adresse contenant au moins une ville et un code postal
+                  label Adresse du lieu d'exercice
+                  input.form-control(disabled="", type="text", name="adresseSite3", placeholder="Adresse du lieu d'exercice", ng-model="membre.adresseSite3", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/")
+                  br
+                  .left
+                      label Ville du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="villeSite3", placeholder="Ville du lieu d'exercice", ng-model="membre.villeSite3", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="site3")
+                      br
+                  .middle   
+                  .left
+                      label Code Postal du lieu d'exercice
+                        span(style="color: red;") *
+                      input.form-control(disabled="true", type="text", name="codePostalSite3", placeholder="Code Postal du lieu d'exercice", ng-model="membre.codePostalSite3", ng-pattern="/^[0-9]{5}$/", ng-required="site3")
+                      br
+                  br
+              .col-xs-6
+                  label Téléphone du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="telSite3", placeholder="Téléphone du lieu d'exercice", ng-model="membre.telSite3", ng-pattern="/^0[0-9]{9}$/", ng-required="site3")
+                  div(align="center", ng-if="formulaireInscription.telSite3.$invalid && formulaireInscription.telSite3.$touched")
+                      small Insérez un numéro de téléphone de lieu valide
+                  br(ng-if="!formulaireInscription.telSite3.$invalid || !formulaireInscription.telSite3.$touched")
+                  label Horaires du lieu d'exercice
+                  input.form-control(type="text", name="horairesSite3", placeholder="Horaires du lieu d'exercice", ng-model="membre.horairesSite3", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù ]{0,48}$/")
+                  div(align="center", ng-if="formulaireInscription.horairesSite3.$invalid && formulaireInscription.horairesSite3.$touched")
+                      small Insérez des horaires correctes (entre 0 et 48 caractères)
+                  br(ng-if="!formulaireInscription.horairesSite3.$invalid || !formulaireInscription.horairesSite3.$touched")
+                  label Type de lieu d'exercice
+                    span(style="color: red;") *
+                  select.form-control(name="typeSite3", ng-model="membre.typeSite3", ng-options="typeSite.typeSite for typeSite in typeSites", ng-required="site3")
+                  div(align="center", ng-if="formulaireInscription.typeSite3.$invalid && formulaireInscription.typeSite3.$touched")
+                      small Sélectionnez un type de lieu d'exercice
+                  br(ng-if="!formulaireInscription.typeSite3.$invalid || !formulaireInscription.typeSite3.$touched")
+                  label Photo du lieu d'exercice (Bannière) - 
+                    small 5MB maximum
+                  input(type="file", name="photoSite3", ngf-select="", ng-model="membre.photoSite3", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile)
+                  div(align="center", ng-if="formulaireInscription.photoSite3.$invalid && formulaireInscription.photoSite3.$touched && !formulaireInscription.photoSite3.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireInscription.photoSite3.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br(ng-if="!formulaireInscription.photoSite3.$invalid || !formulaireInscription.photoSite3.$touched")
+                  div(align="center")
+                      button.btn.btn-danger(type="button", ng-click="suppTroisiemeSite()") Supprimer ce lieu d'exercice
+      hr(ng-if="!succes")
+      center
+          h2 Création du compte
+      br
+      div(align="center")
+          div(vc-recaptcha, key="'6LcuMBoUAAAAAJC8djgvsiGMM4M5bnOnvWgmSLIV'", ng-model="membre.captcha", ng-required="true")
+          br
+          input(type="checkbox", name="cgu", ng-model="membre.cgu", ng-required="true")
+          label &nbsp;&nbsp;J'ai lu et j'accepte les 
+              a(href="/#/conditions-generales-d-utilisation") conditions générales d'utilisation
+                span(style="color: red;") *
+          br
+          button.btn.btn-danger(type="submit", ng-disabled="formulaireInscription.$invalid") S'enregistrer
+  // Messages d'erreurs
+  .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur", style="margin-top:20px;")
+      p(ng-repeat="message in messages", ng-bind="message")
+  // Message de succès
+  .alert.alert-success(align="center", name="successMsg", ng-if="succes", style="margin-top:20px;")
+      p Votre compte a été créé avec succès. Vous allez recevoir un mail afin de finaliser votre inscription. Vous pourrez accéder à votre compte une fois que vous l'aurez validé.
+  // Chargement...
+  div(align="center", name="load", ng-if="load")
+      span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+      |   Chargement...
+
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+        i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+        span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+        .modal-dialog.aideModal
+            .modal-content
+                .modal-header
+                    button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                        span(aria-hidden="true") ×
+                    h4#myModalLabel.modal-title Aide pour s'inscrire
+                .modal-body
+                    videogular(vg-theme="inscriptionAide.theme", vg-player-ready="onPlayerReady($API)")
+                        vg-media(vg-src="inscriptionAide.sources")
+
+                        vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                            vg-play-pause-button
+                            vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                            vg-scrub-bar
+                                vg-scrub-bar-current-time
+                            vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                            vg-volume
+                                vg-mute-button
+                                vg-volume-bar
+                            vg-fullscreen-button
+
+                        vg-overlay-play

@@ -1,0 +1,229 @@
+extends ../../../layouts/layout
+
+block content
+	// Titre de la page
+	script.
+			function showTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = false;
+			};
+
+			function hideTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = true;
+			};
+	title(ng-bind="pageTitle")
+	// Navigation dans "Mon compte"
+	br
+	br
+	h2(align="center", ng-if="installe")
+		b.titleProfil Mon Compte - Réponses à mes Annonces
+	h2(align="center", ng-if="remplacant")
+		b.titleProfil Mon Compte - Mes Réponses
+	hr
+	// Message de succès
+	.alert.alert-success(ng-if="succes", align="center")
+		p(ng-bind="succesMsg")
+	// Messages d'erreurs
+	.alert.alert-danger(ng-if="notFound || erreur", align="center")
+		p(ng-bind="erreurMsg", ng-if="erreur")
+		p(ng-if="notFound") Aucune réponse trouvée
+	.row
+		.col-md-3
+			ul.nav.nav-pills.nav-stacked.admin-menu
+				li
+					a.underlineProfil(href="#/profil/public")
+						i.fa.fa-address-card-o.fa-fw
+						| Consulter mon Profil
+				li
+					a.underlineProfil(href="#/profil/general")
+						i.fa.fa-user-o.fa-fw
+						| Modifier mes Informations
+				li
+					a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Annonces
+				li
+					a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Disponibilités
+				li.active
+					a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+						i.fa.fa-comments.fa-fw
+						| Réponses à mes Annonces
+				li.active
+					a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+						i.fa.fa-comments.fa-fw
+						| Mes Réponses
+				li
+					a.underlineProfil(href="#/profil/motDePasse")
+						i.fa.fa-key.fa-fw
+						| Changer de Mot de Passe
+				li
+					a.underlineProfil(href="#/profil/sites", ng-if="installe")
+						i.fa.fa-home.fa-fw
+						| Gérer mon(mes) Lieu(x) d'exercice
+				li
+					a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+						i.fa.fa-map-o.fa-fw
+						| Gérer mes zones de disponibilité
+				li
+					a.underlineProfil(href="#/profil/photo")
+						i.fa.fa-id-badge.fa-fw
+						| Changer ma Photo de Profil
+				li
+					a.underlineProfil(href="#/profil/suppression")
+						i.fa.fa-trash-o.fa-fw
+						| Fermer mon Compte
+		.col-md-9(ng-if="!notFound")
+			// Réponses
+			h3(ng-if="installe") Nouvelles réponses
+			h3(ng-if="remplacant") Réponses en attente
+			table.table.table-condensed
+				thead
+					tr
+						th(style="text-align: center") Site de l'annonce
+						th(style="text-align: center",ng-if="installe") Remplaçant
+						th(style="text-align: center") Message
+						th(style="text-align: center") Date(s) sélectionnée(s)
+						th(style="text-align: center", ng-if="installe") Validation
+						th(style="text-align: center", ng-if="installe") Suppression
+						th(style="text-align: center", ng-if="installe") Signaler
+				tbody(ng-repeat="reponse in reponses")
+					tr(align="center")
+						td(ng-bind="reponse.reponses.site")
+						td(ng-if="installe")
+							a(target="_blank", href="/#/remplacant/{[{reponse._id}]}") {[{reponse.nom}]} {[{reponse.prenom}]}
+						td(ng-bind="reponse.reponses.message")
+						td
+							p.col-md-4(ng-repeat="date in reponse.reponses.dates") {[{date.jour}]} {[{date.mois}]} {[{date.annee}]} 
+						td(ng-if="installe")
+							button.btn.btn-success(ng-click="passingData(reponse)" data-toggle="modal", data-target=".reponseModal", data-backdrop="static", data-keyboard="false")
+								i.fa.fa-check.fa-fw
+						td(ng-if="installe")
+							button.btn.btn-danger(ng-click="refusReponse(reponse)")
+								i.fa.fa-times.fa-fw
+						td(ng-if="remplacant")
+							button.btn.btn-danger(ng-click="supprimerReponse(reponse)")
+								i.fa.fa-times.fa-fw
+						td(ng-if="installe")
+							a(href="#/signaler/reponse/{[{reponse.reponses._id}]}", style="color: #f14444;")
+								i.fa.fa-flag.fa-fw
+			
+			br
+			br
+			br
+			h3 Réponses acceptées
+			table.table.table-condensed
+				thead
+					tr(align="center")
+						th(style="text-align: center") Site de l'annonce
+						th(style="text-align: center", ng-if="installe") Remplaçant
+						th(style="text-align: center") Message
+						th(style="text-align: center") Date(s) sélectionnée(s)
+				tbody(ng-repeat="reponse in reponsesPositives")
+					tr(align="center")
+						td(ng-bind="reponse.reponses.site")
+						td(ng-if="installe")
+							a(target="_blank", href="/#/remplacant/{[{reponse._id}]}") {[{reponse.nom}]} {[{reponse.prenom}]}
+						td(ng-bind="reponse.reponses.message")
+						td
+							p.col-md-4(ng-repeat="date in reponse.reponses.dates") {[{date.jour}]} {[{date.mois}]} {[{date.annee}]} 
+			br
+			br
+			br
+			h3 Réponses refusées
+			table.table.table-condensed
+				thead
+					tr
+						th(style="text-align: center") Site de l'annonce
+						th(style="text-align: center", ng-if="installe") Remplaçant
+						th(style="text-align: center") Message
+						th(style="text-align: center") Date(s) sélectionnée(s)
+				tbody(ng-repeat="reponse in reponsesNegatives")
+					tr(align="center")
+						td(ng-bind="reponse.reponses.site")
+						td(ng-if="installe")
+							a(target="_blank", href="/#/remplacant/{[{reponse._id}]}") {[{reponse.nom}]} {[{reponse.prenom}]}
+						td(ng-bind="reponse.reponses.message")
+						td
+							p.col-md-4(ng-repeat="date in reponse.reponses.dates") {[{date.jour}]} {[{date.mois}]} {[{date.annee}]} 
+						td
+							button.btn.btn-danger(ng-if="remplacant", ng-click="supprimerReponse(reponse)")
+								i.fa.fa-times.fa-fw
+	
+	
+	.modal.reponseModal#reponseModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+		.modal-dialog.reponseModal
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-label="Close")
+						span(aria-hidden="true") ×
+					h4#myModalLabel.modal-title Validation d'une réponse
+						hr
+						.modal-body
+							p(style="color:red;") Veuillez choisir les dates pour lesquelles vous voulez vous faire remplacer par
+								i {[{reponse.nom}]} {[{reponse.prenom}]} :
+							.container
+								.row
+									.col-md-3
+										div(ng-repeat="date in reponse.reponses.dates")
+											input(type="checkbox", name="datesValidation", checklist-model="reponse.datesValidation", checklist-value="date")
+											small &nbsp;{[{date.jour}]} {[{date.mois}]} {[{date.annee}]}
+									.col-md-3
+										br
+										button.btn.btn-default(ng-click="checkAll(reponse)") Tout sélectionner
+										br
+										br
+										button.btn.btn-default(ng-click="reponse.datesValidation = []") Tout désélectionner
+										br
+										br
+							div(align="right")
+								button.btn.btn-success(ng-disabled="reponse.datesValidation == undefined || reponse.datesValidation == [] || reponse.datesValidation == null || reponse.datesValidation == ''" ng-click="validerReponse(reponse.reponses._id, reponse.datesValidation)") Valider les dates sélectionnées
+
+
+	button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+		i.fa.fa-question.fa-fw
+	.textAideBtn(hidden="true")
+		span Aide
+
+	.modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel2")
+		.modal-dialog.aideModal
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+						span(aria-hidden="true") ×
+					h4#myModalLabel2.modal-title Aide - Profil&nbsp;
+						span(ng-if="installe") Installé
+						span(ng-if="remplacant") Remplaçant
+				.modal-body(ng-if="installe")
+					videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilInstalleAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play
+
+				.modal-body(ng-if="remplacant")
+					videogular(vg-theme="profilRemplacantAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilRemplacantAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play

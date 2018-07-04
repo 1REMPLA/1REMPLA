@@ -1,0 +1,16 @@
+html
+    title 1REMPLA - #{message}
+    link(href="/bootstrap/dist/css/bootstrap.css", rel="stylesheet")
+    link(href="/stylesheets/style.css", rel="stylesheet")
+    body
+        .row
+            .col-md-12(align="center")
+                br
+                h2 1REMPLA
+                img.imgAdmin(src="/images/logo.png")
+        hr
+        h2 #{message}
+        h2 #{error.status}
+        center
+            p
+                a(href="/") Retour à la page d'accueil

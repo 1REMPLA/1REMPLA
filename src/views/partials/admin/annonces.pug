@@ -1,0 +1,70 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  h2.page-header Gérer les annonces
+  br
+  h3 Annonces
+  br
+  table.table
+      thead
+          tr
+              th
+                  center Publiée par
+              th
+                  center Lieu d'exercice de l'annonce
+              th
+                  center Périodes (Date de début
+                    span.fa.fa-long-arrow-right.fa-fw 
+                    span Date de fin)
+              th
+                  center Détails
+      tbody
+          each annonce in annonces
+            tr
+                td
+                    center
+                      span #{annonce.membre.nom} #{annonce.membre.prenom}
+                td
+                    center
+                      if annonce.site
+                        span #{annonce.site.nomSite}
+                td
+                    center
+                      each periode in annonce.annonce.periodes
+                        - var months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+                        - var tmpStartDate = new Date(periode.dateDebut);
+                        - var tmpEndDate = new Date(periode.dateFin);
+                        - var dateDebut = tmpStartDate.getDate()+" "+months[tmpStartDate.getMonth()]+" "+tmpStartDate.getFullYear();
+                        - var dateFin = tmpEndDate.getDate()+" "+months[tmpEndDate.getMonth()]+" "+tmpEndDate.getFullYear();
+                        
+                        p
+                          span #{dateDebut}
+                          span
+                            i.fa.fa-long-arrow-right.fa-fw 
+                          span #{dateFin}
+                td
+                    center
+                        a(href="/admin/dashboard/annonces/id/"+annonce.annonce._id)
+                          i.fa.fa-table.fa-fw
+  .form-group(align="center")
+      a(href="/admin/dashboard") Retour

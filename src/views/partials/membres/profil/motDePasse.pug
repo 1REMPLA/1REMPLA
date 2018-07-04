@@ -1,0 +1,151 @@
+extends ../../../layouts/layout
+
+block content
+	// Titre de la page
+	script.
+			function showTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = false;
+			};
+
+			function hideTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = true;
+			};
+	title(ng-bind="pageTitle")
+	// Navigation dans "Mon compte"
+	br
+	br
+	h2(align="center")
+		b.titleProfil Mon Compte - Changer de Mot de Passe
+	hr
+	// Messages d'erreurs
+	.alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+		p(ng-repeat="message in erreurMsg", ng-bind="message")
+	// Message de succès
+	.alert.alert-success(align="center", name="successMsg", ng-if="succes")
+		p(ng-bind="succesMsg")
+		br
+		a.btn.btn-success(type="button", href="#/profil/public") Voir mon Profil
+	.row
+		.col-md-3
+			ul.nav.nav-pills.nav-stacked.admin-menu
+				li
+					a.underlineProfil(href="#/profil/public")
+						i.fa.fa-address-card-o.fa-fw
+						| Consulter mon Profil
+				li
+					a.underlineProfil(href="#/profil/general")
+						i.fa.fa-user-o.fa-fw
+						| Modifier mes Informations
+				li
+					a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Annonces
+				li
+					a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Disponibilités
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+						i.fa.fa-comments.fa-fw
+						| Réponses à mes Annonces
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+						i.fa.fa-comments.fa-fw
+						| Mes Réponses
+				li.active
+					a.underlineProfil(href="#/profil/motDePasse")
+						i.fa.fa-key.fa-fw
+						| Changer de Mot de Passe
+				li
+					a.underlineProfil(href="#/profil/sites", ng-if="installe")
+						i.fa.fa-home.fa-fw
+						| Gérer mon(mes) Lieu(x) d'exercice
+				li
+					a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+						i.fa.fa-map-o.fa-fw
+						| Gérer mes zones de disponibilité
+				li
+					a.underlineProfil(href="#/profil/photo")
+						i.fa.fa-id-badge.fa-fw
+						| Changer ma Photo de Profil
+				li
+					a.underlineProfil(href="#/profil/suppression")
+						i.fa.fa-trash-o.fa-fw
+						| Fermer mon Compte
+		.col-md-9
+			// Formulaire de changement de mot de passe
+			form(name="formulaireChangementMdp", ng-submit="changementMdp(membre)", ng-if="formulaire", novalidate="")
+				small(style="color: red;") * : Champs obligatoires
+				br
+				br
+				label Mot de passe actuel
+					span(style="color: red;") *
+				input.form-control(type="password", name="mdpActuel", ng-model="membre.mdpActuel", ng-pattern="/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{7,}/", ng-required="true")
+				div(align="center")
+					small(ng-if="formulaireChangementMdp.mdpActuel.$invalid && formulaireChangementMdp.mdpActuel.$touched") Insérez votre mot de passe actuel
+					br(ng-if="!formulaireChangementMdp.mdpActuel.$invalid || !formulaireChangementMdp.mdpActuel.$touched")
+				label Nouveau mot de passe
+					span(style="color: red;") *
+				input.form-control(type="password", name="mdpNouveau1", ng-model="membre.mdpNouveau1", ng-pattern="/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{7,}/", ng-required="true")
+				div(align="center")
+					small(ng-if="formulaireChangementMdp.mdpNouveau1.$invalid && formulaireChangementMdp.mdpNouveau1.$touched") Insérez un nouveau mot de passe valide (Au moins 7 caractères contenant au moins une minuscule, une majuscule et un chiffre)
+					br(ng-if="!formulaireChangementMdp.mdpNouveau1.$invalid || !formulaireChangementMdp.mdpNouveau1.$touched")
+				label Confirmez le nouveau mot de passe
+					span(style="color: red;") *
+				input.form-control(type="password", name="mdpNouveau2", ng-model="membre.mdpNouveau2", ng-pattern="membre.mdpNouveau1", ng-required="true")
+				div(align="center")
+					small(ng-if="formulaireChangementMdp.mdpNouveau2.$invalid && formulaireChangementMdp.mdpNouveau2.$touched") Confirmez votre nouveau mot de passe
+					br(ng-if="!formulaireChangementMdp.mdpNouveau2.$invalid || !formulaireChangementMdp.mdpNouveau2.$touched")
+				button.btn.btn-danger(type="submit", ng-disabled="formulaireChangementMdp.$invalid") Changer mon mot de passe
+			// Chargement...
+			.col-md-12(align="center", name="load", ng-if="load")
+				span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+				|       Chargement...
+
+	button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+		i.fa.fa-question.fa-fw
+	.textAideBtn(hidden="true")
+		span Aide
+
+	.modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+		.modal-dialog.aideModal
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+						span(aria-hidden="true") ×
+					h4#myModalLabel.modal-title Aide - Profil&nbsp;
+						span(ng-if="installe") Installé
+						span(ng-if="remplacant") Remplaçant
+				.modal-body(ng-if="installe")
+					videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilInstalleAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play
+
+				.modal-body(ng-if="remplacant")
+					videogular(vg-theme="profilRemplacantAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilRemplacantAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play

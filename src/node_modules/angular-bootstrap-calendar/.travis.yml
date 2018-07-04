@@ -1,0 +1,17 @@
+language: node_js
+
+node_js:
+- '6'
+
+script: npm test
+
+notifications:
+  email: false
+
+env:
+  - CI=true
+
+after_success:
+- npm run codecov
+
+cache: yarn

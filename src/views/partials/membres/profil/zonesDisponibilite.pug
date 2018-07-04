@@ -1,0 +1,136 @@
+extends ../../../layouts/layout
+
+block content
+	// Titre de la page
+	script.
+			function showTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = false;
+			};
+
+			function hideTextAide() {
+				document.getElementsByClassName("textAideBtn")[0].hidden = true;
+			};
+	title(ng-bind="pageTitle")
+	br
+	br
+	h2(align="center")
+		b.titleProfil Mon Compte - Gérer mes zones de disponibilité
+	hr
+	// Messages d'erreurs
+	.alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+		p(ng-repeat="message in erreurMsg", ng-bind="message")
+	// Message de succès
+	.alert.alert-success(align="center", name="successMsg", ng-if="succes")
+		p(ng-bind="succesMsg")
+	// Navigation dans "Mon compte"
+	.row
+		.col-md-3
+			ul.nav.nav-pills.nav-stacked.admin-menu.navigation
+				li
+					a.underlineProfil(href="#/profil/public")
+						i.fa.fa-address-card-o.fa-fw
+						| Consulter mon Profil
+				li
+					a.underlineProfil(href="#/profil/general")
+						i.fa.fa-user-o.fa-fw
+						| Modifier mes Informations
+				li
+					a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Annonces
+				li
+					a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Disponibilités
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+						i.fa.fa-comments.fa-fw
+						| Réponses à mes Annonces
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+						i.fa.fa-comments.fa-fw
+						| Mes Réponses
+				li
+					a.underlineProfil(href="#/profil/motDePasse")
+						i.fa.fa-key.fa-fw
+						| Changer de Mot de Passe
+				li
+					a.underlineProfil(href="#/profil/sites", ng-if="installe")
+						i.fa.fa-home.fa-fw
+						| Gérer mes Lieu(x) d'exercice
+				li.active
+					a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+						i.fa.fa-map-o.fa-fw
+						| Gérer mes zones de disponibilité
+				li
+					a.underlineProfil(href="#/profil/photo")
+						i.fa.fa-id-badge.fa-fw
+						| Changer ma Photo de Profil
+				li
+					a.underlineProfil(href="#/profil/suppression")
+						i.fa.fa-trash-o.fa-fw
+						| Fermer mon Compte
+		.col-md-4
+			#dashboard.panel.panel-danger
+				.panel-heading
+					h4.panel-title Zones de Disponibilité
+				.panel-body
+					table(ng-if="verifTableau()")
+						tr
+							th Ville (Code Postal) - Rayon du cercle
+							th Supprimer
+						tr(ng-repeat="location in locations")
+							td
+								br
+								p {[{location.ville}]} ({[{location.codePostal}]}) - {[{location.rayon}]} km
+							td
+								button.btn.btn-danger(type="button", ng-click="supprimerCercle($index)")
+									i.fa.fa-times.fa-pw
+								br
+				.panel-footer(align="center")
+					button.btn.btn-danger(type="button", ng-click="supprimerTout()") Supprimer tout
+					span &nbsp;&nbsp;
+					button.btn.btn-primary(type="button", ng-click="ajouterCercle()") Ajouter
+		.col-md-5
+			ui-gmap-google-map.angular-google-map-container-zonesGeo(center="map.center", zoom="map.zoom")
+				ui-gmap-circle(ng-repeat="circle in circles", ng-model="circlesModel", center="circle.center", radius="circle.radius", fill="circle.fill", stroke="circle.stroke", clickable="circle.clickable", editable="circle.clickable", draggable="circle.draggable", events="circle.events")
+				ui-gmap-marker(ng-repeat="m in map.markers", coords="m.coords", icon="m.icon", idkey="m.id", options="m.options", events="map.markersEvents")
+	.row
+		.col-md-3
+		.col-md-9(align="center")
+			br
+			button.btn.btn-success(type="button", ng-click="validationZonesGeo(circles)") Valider
+			// Chargement...
+			.col-md-12(align="center", name="load", ng-if="load")
+				span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+				|       Chargement...
+
+	button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+		i.fa.fa-question.fa-fw
+	.textAideBtn(hidden="true")
+		span Aide
+
+	.modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+		.modal-dialog.aideModal
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+						span(aria-hidden="true") ×
+					h4#myModalLabel.modal-title Aide - Profil Remplaçant
+
+				.modal-body
+					videogular(vg-theme="profilRemplacantAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilRemplacantAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play

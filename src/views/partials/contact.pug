@@ -1,0 +1,87 @@
+extends ../layouts/layout.pug
+
+block content
+  style.
+      body {
+      background-image:
+      linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+      ),
+      url(/images/accueil.jpeg);
+      background-attachment: fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: bottom;
+      }
+      .panel-default {
+      opacity: 0.9;
+      margin-top:10px;
+      }
+      .form-group.last { margin-bottom:0px; }
+  //Titre de la page
+  title {[{pageTitle}]}
+  br
+  .container
+      .row
+          .col-md-3
+          .col-md-6
+              .panel.panel-default
+                  .panel-heading
+                      span.glyphicon.glyphicon-question-sign
+                      |  Nous contacter
+                  .panel-body
+                    .alert.alert-danger(align="center", name="errors", ng-if="error")
+                      p(ng-repeat="msg in erreurMsg") {[{msg}]}
+                    .alert.alert-success(align="center", name="succes", ng-if="succes")
+                      p {[{succesMsg}]}
+                    form.form-horizontal(name="formulaireContact", ng-submit="contact(informations)", ng-if="!succes", novalidate)
+                      small * : Champs obligatoires
+                      br
+                      br
+                      .row
+                        .col-sm-1
+                        .col-sm-4
+                          .form-group
+                            label.control-label Nom
+                                span(style="color: red;") *
+                            input.form-control(type="text", name="nom", placeholder="Votre nom", ng-model="informations.nom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                            div(align="center", ng-if="formulaireContact.nom.$invalid && formulaireContact.nom.$touched")
+                                small Insérez un nom
+                        .col-sm-2
+                        .col-sm-4
+                          .form-group
+                            label.control-label Prénom
+                                span(style="color: red;") *
+                            input.form-control(type="text", name="prenom", placeholder="Votre prénom", ng-model="informations.prenom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                            div(align="center", ng-if="formulaireContact.prenom.$invalid && formulaireContact.prenom.$touched")
+                                small Insérez un prénom
+                        .col-sm-1
+                      .row
+                        .col-sm-1
+                        .col-sm-10
+                          .form-group
+                            label.control-label Adresse Mail
+                                span(style="color: red;") *
+                            input.form-control(type="email", name="email", placeholder="Votre adresse mail", ng-model="informations.email", ng-required="true", ng-pattern="/^[a-z0-9_-]+(\.[a-z0-9_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/")
+                            div(align="center", ng-if="formulaireContact.email.$invalid && formulaireContact.email.$touched")
+                                small Insérez une adresse mail valide
+                          .form-group
+                            label.control-label Message
+                                span(style="color: red;") *
+                            textarea.form-control(type="text", name="message", rows="4", placeholder="Votre message", ng-model="informations.message", ng-required="true", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{1,750}$/")
+                            div(align="center", ng-if="formulaireContact.message.$invalid && formulaireContact.message.$touched")
+                                small Votre message est vide ou contient des caractères non supportés (entre 1 et 750 caractères)
+                        .col-sm-1
+                      .form-group.last
+                          center
+                              div(vc-recaptcha, key="'6LcuMBoUAAAAAJC8djgvsiGMM4M5bnOnvWgmSLIV'", ng-model="informations.captcha", ng-required="true")
+                              br
+                              button.btn.btn-danger.btn-sm(type="submit", ng-disabled="formulaireContact.$invalid")
+                                  | Envoyer
+                    div(align="center", name="load", ng-if="load")
+                        span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+                        |   Chargement...
+                        

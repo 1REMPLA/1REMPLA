@@ -1,0 +1,59 @@
+extends ../../../layouts/layout
+
+block content
+  style.
+      body {
+      background-image:
+      linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+      ),
+      url(/images/accueil.jpeg);
+      background-attachment: fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: bottom;
+      }
+      .panel-default {
+      opacity: 0.9;
+      margin-top:30px;
+      }
+      .form-group.last { margin-bottom:0px; }
+  // Titre de la page
+  title(ng-bind="pageTitle")
+  br
+  br
+  br
+  br
+  .container
+      .row
+          .col-md-3
+          .col-md-6
+              .panel.panel-default
+                  .panel-heading
+                      span.glyphicon.glyphicon-lock
+                      |  Mot de Passe oublié
+                  .panel-body
+                      div(align="center")
+                          // Messages d'erreurs
+                          .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+                              p(ng-repeat="message in erreurMsg", ng-bind="message")
+                          // Message de succès
+                          .alert.alert-success(align="center", name="successMsg", ng-if="succes")
+                              p(ng-bind="succesMsg")
+                          // Formulaire de mot de passe oublié
+                          form(name="formulaireMdpOublie", ng-submit="mdpOublie(oubli)", novalidate="")
+                              label
+                                  | Saisissez l'adresse mail liée à votre compte. Un lien vous sera alors transmis par mail pour réinitialiser votre mot de passe.
+                              input.form-control(type="email", name="adresseMail", placeholder="Adresse Mail", ng-model="oubli.adresseMail", ng-paste="$event.preventDefault()", ng-required="true", ng-pattern="/^[a-z0-9_-]+(\.[a-z0-9_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/")
+                              div(align="center", ng-if="formulaireMdpOublie.adresseMail.$invalid && formulaireMdpOublie.adresseMail.$touched")
+                                  small Insérez votre adresse mail
+                              br
+                              button.btn.btn-danger(type="submit", ng-disabled="formulaireMdpOublie.$invalid") Envoyer
+                  .panel-footer
+                      // Chargement...
+                      div(align="center", name="load", ng-if="load")
+                          span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+                          |                   Chargement...

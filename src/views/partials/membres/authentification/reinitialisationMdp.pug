@@ -1,0 +1,63 @@
+extends ../../../layouts/layout
+
+block content
+  style.
+      body {
+      background-image:
+      linear-gradient(
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
+      ),
+      url(/images/accueil.jpeg);
+      background-attachment: fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      background-position: bottom;
+      }
+      .panel-default {
+      opacity: 0.9;
+      margin-top:30px;
+      }
+      .form-group.last { margin-bottom:0px; }
+  // Titre de la page
+  title(ng-bind="pageTitle")
+  br
+  br
+  br
+  br
+  .container
+      .row
+          .col-md-3
+          .col-md-6
+              .panel.panel-default
+                  .panel-heading
+                      span.glyphicon.glyphicon-lock
+                      |  Réinitialisation de Mot de Passe
+                  .panel-body
+                      div(align="center")
+                          // Messages d'erreurs
+                          .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+                              p(ng-repeat="message in erreurMsg", ng-bind="message")
+                          // Message de succès
+                          .alert.alert-success(align="center", name="successMsg", ng-if="succes")
+                              p(ng-bind="succesMsg")  
+                      form(name="formulaireMdpReinit", ng-submit="reinitialisation(reinit)", align="center", ng-if="formulaire", novalidate)
+                          // Formulaire de mot de passe oublié
+                          label Nouveau mot de passe
+                          input.form-control(type="password", name="mdpNouveau1", placeholder="Nouveau mot de passe", ng-model="reinit.mdpNouveau1", ng-pattern="/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{7,}/", ng-required="true")
+                          div(align="center")
+                              small(ng-if="formulaireMdpReinit.mdpNouveau1.$invalid && formulaireMdpReinit.mdpNouveau1.$touched") Insérez un mot de passe valide (Au moins 7 caractères contenant au moins une minuscule, une majuscule et un chiffre)
+                              br(ng-if="!formulaireMdpReinit.mdpNouveau1.$invalid || !formulaireMdpReinit.mdpNouveau1.$touched")
+                          label Confirmez le nouveau mot de passe
+                          input.form-control(type="password", name="mdpNouveau2", placeholder="Confirmez le nouveau mot de passe", ng-model="reinit.mdpNouveau2", ng-pattern="reinit.mdpNouveau1", ng-paste="$event.preventDefault()", ng-required="true")
+                          div(align="center")
+                              small(ng-if="formulaireMdpReinit.mdpNouveau2.$invalid && formulaireMdpReinit.mdpNouveau2.$touched") Confirmez votre nouveau mot de passe
+                              br(ng-if="!formulaireMdpReinit.mdpNouveau2.$invalid || !formulaireMdpReinit.mdpNouveau2.$touched")
+                          button.btn.btn-danger(type="submit", ng-disabled="formulaireMdpReinit.$invalid") Modifier
+                  .panel-footer(ng-if="formulaire")
+                      // Chargement...
+                      div(align="center", name="load", ng-if="load")
+                          span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+                          |                   Chargement...

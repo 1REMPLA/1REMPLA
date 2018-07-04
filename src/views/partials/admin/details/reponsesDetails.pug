@@ -1,0 +1,43 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  .container
+      .jumbotron
+          .row
+              h2(align="center")
+                  b.titleProfil Réponse de #{remplacant.nom} #{remplacant.prenom}
+              hr
+              h3 Informations du membre
+                a(href="/admin/dashboard/membres/id/"+remplacant._id)
+                  i.fa.fa-address-card-o.fa-fw
+              if site
+                h3 Informations du lieu d'exercice
+                  a(href="/admin/dashboard/sites/id/"+site._id)
+                    i.fa.fa-home.fa-fw
+              h3 Périodes (Date de début&nbsp;
+                span.fa.fa-long-arrow-right.fa-fw 
+                span &nbsp;Date de fin)
+              each date in reponse.dates
+                p #{date.jour} #{date.mois} #{date.annee}
+  .form-group(align="center")
+      a(href="/admin/dashboard/reponses") Retour

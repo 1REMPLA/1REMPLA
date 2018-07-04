@@ -1,0 +1,182 @@
+extends ../../../layouts/layout
+
+block content
+  // Titre de la page
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  title(ng-bind="pageTitle")
+  br
+  br
+  h2(align="center")
+      b.titleProfil Mon Compte - Gérer mes Annonces
+  hr
+  // Messages d'erreurs
+  .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+      p(ng-repeat="message in erreurMsg", ng-bind="message")
+  // Navigation dans "Mon compte"
+  .row
+      .col-md-3
+          ul.nav.nav-pills.nav-stacked.admin-menu.navigation
+              li
+                  a.underlineProfil(href="#/profil/public")
+                      i.fa.fa-address-card-o.fa-fw
+                      | Consulter mon Profil
+              li
+                  a.underlineProfil(href="#/profil/general")
+                      i.fa.fa-user-o.fa-fw
+                      | Modifier mes Informations
+              li.active
+                  a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Disponibilités
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+                      i.fa.fa-comments.fa-fw
+                      | Réponses à mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+                      i.fa.fa-comments.fa-fw
+                      | Mes Réponses
+              li
+                  a.underlineProfil(href="#/profil/motDePasse")
+                      i.fa.fa-key.fa-fw
+                      | Changer de Mot de Passe
+              li
+                  a.underlineProfil(href="#/profil/sites", ng-if="installe")
+                      i.fa.fa-home.fa-fw
+                      | Gérer mon(mes) Lieu(x) d'exercice
+              li
+                  a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+                      i.fa.fa-map-o.fa-fw
+                      | Gérer mes zones de disponibilité
+              li
+                  a.underlineProfil(href="#/profil/photo")
+                      i.fa.fa-id-badge.fa-fw
+                      | Changer ma Photo de Profil
+              li
+                  a.underlineProfil(href="#/profil/suppression")
+                      i.fa.fa-trash-o.fa-fw
+                      | Fermer mon Compte
+      .col-md-9
+          div(align="right")
+              button.btn.btn-danger(ng-click="showCalendrier()") Calendrier des périodes de remplacement
+              span &nbsp;&nbsp;
+              button.btn.btn-danger(ng-click="showListe()") Liste des périodes de remplacement
+          h4.text-left Nombre de périodes établies : {[{totalAnnonces}]}
+          // Calendrier
+          form(name="calendrierDuProfil", ng-if="calendrier", novalidate="")
+              hr
+              div
+                  br
+                  .row.text-center
+                      .col-md-4
+                          br
+                          .btn-group
+                              button.btn.btn-danger(mwl-date-modifier, date="viewDates.viewDate", decrement="calendarView") Précédent
+                              button.btn.btn-danger(mwl-date-modifier, date="viewDates.viewDate", set-to-today) Aujourd'hui
+                              button.btn.btn-danger(mwl-date-modifier, date="viewDates.viewDate", increment="calendarView") Suivant
+                      .col-md-4
+                          h2(align="center") {[{calendarTitle}]}
+                      br
+                      .col-md-4
+                          .btn-group
+                              a.btn.btn-danger(type="button", ng-if="site2", href="#/profil/calendrier/{[{idSite1}]}") Site 1
+                              a.btn.btn-danger(type="button", ng-if="site2", href="#/profil/calendrier/{[{idSite2}]}") Site 2
+                              a.btn.btn-danger(type="button", ng-if="site3", href="#/profil/calendrier/{[{idSite3}]}") Site 3
+              br
+              .calendrier
+                  mwl-calendar(view="calendarView", view-date="viewDates.viewDate", events="events", view-title="calendarTitle", cell-modifier="cellModifier(calendarCell)", on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)", on-timespan-click="timeSpanClicked(calendarDate)", on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)", on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd", slide-box-disabled="true", cell-is-open="true")
+              div(align="center")
+                  hr
+                  button.btn.btn-danger.btn-lg(type="button", data-toggle="modal", data-target=".bs-example-modal-sm") Valider
+                  hr
+              br
+              .col-md-6
+                  h2(align="center") {[{calendarTitle2}]}
+                  br
+                  .calendrier
+                      mwl-calendar(view="calendarView", view-date="viewDates.viewDate2", events="events", view-title="calendarTitle2", cell-modifier="cellModifier(calendarCell)", on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)", on-timespan-click="timeSpanClicked(calendarDate)", on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)", on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd", slide-box-disabled="true", cell-is-open="true")
+              .col-md-6
+                  .calendrier
+                      h2(align="center") {[{calendarTitle3}]}
+                      br
+                      mwl-calendar(view="calendarView", view-date="viewDates.viewDate3", events="events", view-title="calendarTitle3", cell-modifier="cellModifier(calendarCell)", on-view-change-click="viewChangeClicked(calendarDate, calendarNextView)", on-timespan-click="timeSpanClicked(calendarDate)", on-date-range-select="rangeSelected(calendarRangeStartDate, calendarRangeEndDate)", on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd", slide-box-disabled="true", cell-is-open="true")
+              .modal.fade.bs-example-modal-sm(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+                  .modal-dialog.modal-sm(role="document")
+                      .modal-content
+                          .modal-header
+                              button.close(type="button", data-dismiss="modal", aria-label="Close")
+                                  span(aria-hidden="true") ×
+                              h4#myModalLabel.modal-title Confirmation
+                          .modal-body
+                              div
+                                  | Êtes-vous sûr de vouloir appliquer les changements ?
+                              div
+                                  | {[{attention}]}
+                          .modal-footer
+                              button.btn.btn-default(type="button", data-dismiss="modal") Retour
+                              button.btn.btn-danger(type="submit", data-dismiss="modal", ng-click="validerCalendar()") Confirmer
+          br
+          .alert.alert-danger(align="center", ng-if="liste && !periodesOk")
+            p Vous n'avez pas encore établi de périodes
+          table(ng-if="liste && periodesOk")
+              thead
+                  tr
+                      th Lien de l'annonce
+                      th Périodes (Date de début 
+                        span.fa.fa-long-arrow-right.fa-fw 
+                        span Date de fin)
+              tbody
+                  tr
+                      td
+                          a.aTabAnnonce(target="_blank", href="/#/annonces/{[{annoncesGet._id}]}") Voir le détail de l'annonce
+                      td 
+                        p(ng-repeat="periode in annoncesGet.periodes") 
+                          span {[{periode.dateDebut}]} 
+                          span
+                            i.fa.fa-long-arrow-right.fa-fw 
+                          span {[{periode.dateFin}]}
+          // Chargement...
+          .col-md-12(align="center", name="load", ng-if="load")
+              span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+              |       Chargement...
+
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel2.modal-title Aide - Profil Installé
+              .modal-body
+                  videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="profilInstalleAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

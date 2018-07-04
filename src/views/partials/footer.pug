@@ -1,0 +1,134 @@
+style.
+  footer{
+    border-color: #ccc;
+    background-color: WHITE;
+    box-shadow: 0 -1px 2px 0 #ccc;
+    padding: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  footer #buttonsFooter{
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  footer #buttonsFooter .col-sm-4 ul{
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0 !important;
+  }
+  footer  #buttonsFooter .col-sm-4{
+    text-align: center;
+  }
+  footer #buttonsFooter .col-sm-4 ul li p{
+    margin-bottom: 0 !important;
+    text-align: center;
+    font-size: 1em;
+  }
+  footer #buttonsFooter .col-sm-4 ul li p a{
+    color: GREY;
+  }
+  footer #buttonsFooter .col-sm-4 ul li p a:hover{
+    color: #f14444;
+  }
+  footer #copyrightFooter{
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    background-color: BLACK;
+
+  }
+  footer #copyrightFooter p{
+    width: 70%;
+    font-size: 1em;
+    color: WHITE;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+footer#footer
+    .container#buttonsFooter
+        .col-sm-4
+            img(src="/images/logo.png" style="max-width: 15%; max-height: 15%;")
+        .col-sm-4
+          ul
+            li
+              p
+                a(href="/#/") Accueil
+            li
+              p
+                a(href="/#/a-propos") À propos
+            li
+              p
+                a(href="/#/contact") Nous contacter
+        .col-sm-4
+          ul(style="list-style: none; padding-left: 0")
+            li
+              p
+                a(href="/#/mentions-legales") Mentions Légales
+            li
+              p
+                a(href="/#/conditions-generales-d-utilisation") Conditions générales d'utilisation
+    .container#copyrightFooter
+        p Copyright © 2018 1Rempla. Tous droits réservés.
+    script.
+      //$("#footer").width($(window).width());
+      $(window).click(function(){
+          
+          var footerHeight = 0;
+          var $footer = $("#footer");
+             
+          positionFooter();
+
+          function positionFooter() {
+              footerHeight = $footer.height();
+                            
+               if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+                   $footer.css({
+                     position: "absolute"
+                   })
+               } else {
+                   $footer.css({
+                     position: "relative",
+                     margin: "25px 0 -50px"
+                   })
+                   if ($(window).width() > $footer.width()+1){
+                     $footer.css({
+                       margin: "25px -50px -50px"
+                     })
+                   }
+               }
+                 
+          }
+                   
+      });
+      $(window).ready(function(){
+        var footerHeight = 0;
+        var $footer = $("#footer");
+           
+        positionFooter();
+
+        function positionFooter() {
+            footerHeight = $footer.height();
+
+             if ( ($(document.body).height()+footerHeight) < $(window).height()) {
+                 $footer.css({
+                   position: "absolute"
+                 })
+             } else {
+                 $footer.css({
+                   position: "relative",
+                   margin: "25px 0 0"
+                 })
+                 if ($(window).width() > $footer.width()+1){
+                   $footer.css({
+                     margin: "25px -50px -50px"
+                   })
+                 }
+             }
+               
+        }
+
+        $(window)
+               .scroll(positionFooter)
+               .resize(positionFooter)
+      });

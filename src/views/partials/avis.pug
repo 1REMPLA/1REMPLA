@@ -1,0 +1,41 @@
+extends ../layouts/layout
+
+block content
+    // Titre de la page
+    title {[{pageTitle}]}
+    br
+    br
+
+    h2.titleProfil(align="center")
+        i.fa.fa-star.fa-fw
+        | Donnez votre avis sur 1REMPLA
+    hr
+    .container
+        small(style="color: red;", ng-if="!succes") * : Champs obligatoires
+        br
+        .jumbotron
+            .alert.alert-danger(align="center", name="errors", ng-if="error")
+                p(ng-repeat="message in erreurMsg") {[{message}]}
+            .alert.alert-success(align="center", name="succes", ng-if="succes")
+                p {[{succesMsg}]}
+            form(name="formulaireAvis", ng-submit="donnerAvis(avis)", ng-if="!succes", novalidate)
+                label Sur une échelle de 1 à 5, comment évalueriez-vous 1REMPLA ?
+                    span(style="color: red;") *
+                br
+                br
+                star-rating-comp(num-of-stars="stars.nombre", rating="stars.rating", show-hover-stars="stars.hover", space="stars.space", size="stars.size", label-text="stars.rating || '0'", label-position="stars.position", star-type="stars.type", on-rating-change="changeText($event)")
+                br
+                br
+                label Votre commentaire
+                    span(style="color: red;") *
+                textarea.form-control(type="text", rows="5", name="commentaire", placeholder="Votre commentaire justifiant votre note", ng-model="avis.commentaire", ng-required="true", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù.,;?!:@_()/'\"\\n ]{1,750}$/")
+                div(align="center", ng-if="formulaireAvis.commentaire.$invalid && formulaireAvis.commentaire.$touched")
+                    small Votre commentaire est vide ou contient des caractères non supportés (entre 1 et 750 caractères)
+                div(align="center")
+                    hr
+                    div(vc-recaptcha, key="'6LcuMBoUAAAAAJC8djgvsiGMM4M5bnOnvWgmSLIV'", ng-model="avis.captcha", ng-required="true")
+                    br
+                    button.btn.btn-danger(type="submit", ng-disabled="formulaireAvis.$invalid") Donner son avis
+                div(align="center", name="load", ng-if="load")
+                    span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+                    |   Chargement...

@@ -1,0 +1,69 @@
+extends ../../layouts/layout.pug
+
+block content
+  title(ng-bind="pageTitle")
+
+  div(ng-if="notFound && !forbidden")
+    br
+    div.alert.alert-danger(align="center")
+      p Remplaçant non trouvé
+
+  div(ng-if="forbidden && !installe")
+    br
+    div.alert.alert-danger(align="center")
+      p Vous n'avez pas le droit de voir le profil des remplaçants
+
+  div(ng-if="forbidden && installe")
+    br
+    div.alert.alert-danger(align="center")
+      p Vous n'avez pas le droit de voir le profil de ce remplaçant
+
+  br
+  br
+
+  div.container(ng-if="!notFound && !forbidden")
+    div.jumbotron.jumbotron-annonce
+      div.row
+        div.col-xs-4(align="center")
+          a(href="#/profil/photo")
+            img.photoProfil(ng-src="{[{membre.photoMembre}]}")
+
+        h2 {[{membre.nom}]} {[{membre.prenom}]}
+
+        br
+
+        div.col-xs-4
+          b Spécialité :
+            p(ng-bind="specialite.typeSpecialite")
+          b Adresse mail :
+            p(ng-bind="membre.adresseMail")
+          b Téléphone :
+            p(ng-bind="membre.telMembre")
+          div(ng-if="membre.successeur")
+            p Recherche un successeur
+          div(ng-if="!membre.successeur && membre.collaborateur")
+            p Recherche un collaborateur
+
+        div.col-xs-4
+          b Adresse :
+            p(ng-bind="membre.adresseMembre")
+          b Ville :
+            p(ng-bind="membre.villeMembre")
+          b Code Postal :
+            p(ng-bind="membre.codePostalMembre")
+          div(ng-if="membre.successeur && membre.collaborateur")
+            p Recherche un collaborateur
+
+      br
+
+      div(ng-if="showBio")
+        h3 Biographie
+        hr
+        div.cadreInfo
+          br
+          p(ng-bind-html="membre.biographie")
+          br
+      div(align="right" ng-if="installe")
+        a(href="#/signaler/membre/{[{membre._id}]}", style="color: #f14444;")
+          i.fa.fa-flag.fa-fw
+          small Signaler ce membre

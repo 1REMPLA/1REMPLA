@@ -1,0 +1,74 @@
+// Spinner from http://tobiasahlin.com/spinkit/
+@-webkit-keyframes sk-stretchdelay {
+	0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+	20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+	0%, 40%, 100% { 
+		transform: scaleY(0.4);
+		-webkit-transform: scaleY(0.4);
+	}  20% { 
+		transform: scaleY(1.0);
+		-webkit-transform: scaleY(1.0);
+	}
+}
+
+/*********************************************/
+
+
+@keyframes revolve-in-forward{
+	0%{
+		opacity: 0;
+		transform: scale(0,0) translateX(0px);
+	}
+
+	50%{
+		opacity: 0.5;
+		transform: scale(0.5,0.5) translateX(100%);
+	}
+
+	100%{
+		opacity: 1;
+		transform: scale(1,1) translateX(0px);
+	}
+}
+@keyframes revolve-out-forward{
+	50%{
+		opacity: 0.5;
+		transform: scale(0.5,0.5) translateX(-100%);
+	}
+
+	100%{
+		opacity: 0;
+		transform: scale(0,0) translateX(0px);
+	}
+}
+
+@keyframes revolve-in-backward{
+	0%{
+		opacity: 0;
+		transform: scale(0,0) translateX(0px);
+	}
+
+	50%{
+		opacity: 0.5;
+		transform: scale(0.5,0.5) translateX(-100%);
+	}
+
+	100%{
+		opacity: 1;
+		transform: scale(1,1) translateX(0px);
+	}
+}
+@keyframes revolve-out-backward{
+	50%{
+		opacity: 0.5;
+		transform: scale(0.5,0.5) translateX(100%);
+	}
+
+	100%{
+		opacity: 0;
+		transform: scale(0,0) translateX(0px);
+	}
+}

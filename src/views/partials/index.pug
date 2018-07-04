@@ -1,0 +1,280 @@
+extends ../layouts/layout
+
+block content
+  link(href="/stylesheets/grayscale.min.css", rel="stylesheet")
+  style.
+      html, body {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      }
+  script.
+      function showTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = false;
+      };
+
+      function hideTextAide() {
+          document.getElementsByClassName("textAideBtn")[0].hidden = true;
+      };
+  title(ng-bind="pageTitle")
+  .container-fluid.blok1.accueilImg
+      header.intro
+          .intro-body
+          
+              br
+              br
+              h1.brand-heading 1Rempla
+              p.intro-text
+                  | Site de remplacement
+                  br
+                  | pour professionnels de la Santé.
+              form#formulaireRechercheAnnonce(name="rechercheAnnonce", ng-submit="rechercher(recherche)", novalidate="", ng-init="rechercheTypeAnnonce = 'true'")
+                  button#trouverAnnonceBtn.col-xs-6.col-md-4(type="button", name="trouverAnnonce", ng-class="{true: 'redText', false: 'blackText'}[rechercheTypeAnnonce]", ng-disabled="rechercheTypeAnnonce === 'true'", ng-click="rechercheTypeAnnonce = 'true'") Trouver une annonce
+                  .col-md-4
+                  button.col-xs-6.col-md-4(id="trouverRemplaçantBtn", type="button", name="trouverRemplaçant", ng-class="{false: 'redText', true: 'blackText'}[rechercheTypeAnnonce]", ng-disabled="!(rechercheTypeAnnonce === 'true')", ng-click="rechercheTypeAnnonce = 'false'") Trouver un remplaçant
+                  br
+                  .row
+                      .col-md-4
+                          center
+                              label Quoi ?
+                              br
+                          select.form-control(name="specialite", ng-model="recherche.specialite", ng-options="specialite.typeSpecialite for specialite in specialites", ng-required="true")
+                          div(align="center", ng-if="rechercheAnnonce.specialite.$invalid && rechercheAnnonce.specialite.$touched")
+                              small Sélectionnez une spécialité
+                          br
+                      .col-md-4
+                          center
+                              label Quand ?
+                              br
+                          input.form-control(type="text", style="text-align:center;", name="periode", ng-model="recherche.periode", placeholder="Insérez une période", ng-required="true", ng-pattern="/[0-9]{2}/[0-9]{2}/[0-9]{4} - [0-9]{2}/[0-9]{2}/[0-9]{4}/")
+                          div(align="center", ng-if="rechercheAnnonce.periode.$invalid && rechercheAnnonce.periode.$touched")
+                              small Insérez une bonne periode
+                          script(type="text/javascript").
+                              $(function() {
+                              $('input[name="periode"]').daterangepicker({
+                              "autoApply": true,
+                              "minDate": moment(),
+                              "locale": {
+                              "format": "DD/MM/YYYY"
+                              }
+                              });
+                              });
+                          br
+                      .col-md-4
+                          center
+                              label Où ?
+                          input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="recherche.place", options="options", details="details", placeholder="Entrez une adresse, une ville ...", name="place", ng-required="true")
+                          div(align="center", ng-if="rechercheAnnonce.place.$invalid && rechercheAnnonce.place.$touched")
+                              small Insérez une adresse, une ville ...
+                      .col-md-3
+                  br
+                  #actionPerim(ng-init="recherche.distance='50'", ng-class="{true: 'visiblePerim', false: 'hidePerim'}[rechercheTypeAnnonce]")
+                      | Périmètre d'action :  
+                      input#slider(data-slider-id="index", type="text", data-slider-min="5", data-slider-max="250", data-slider-step="5", data-slider-tooltip="hide", data-slider-value="50", value="50", ng-model="recherche.distance")
+                      |    km
+                  script(type="text/javascript") $("#slider").slider({tooltip: 'always'});
+                  br
+                  a.btn.btn-default.btn-lg(type="submit", ng-disabled="rechercheAnnonce.$invalid", ng-click="rechercher(recherche)")
+                      i.fa.fa-search.fa-fw
+                      span.network-name Rechercher
+              a.btn.btn-circle.page-scroll(href="#blok2", du-smooth-scroll, duration="2000")
+                  i.fa.fa-angle-double-down.animated
+      .rechercheModal(ng-if="showModal")
+          br
+          br
+          br
+          center
+              div(ng-if="!erreur")
+                  center
+                      h3 Recherche d'annonces en cours ...
+                  hr
+                  center
+                      .progress(style="width: 85%")
+                          .progress-bar.progress-bar-danger.progress-bar-striped.active(role="progressbar", aria-valuenow="100", aria-valuemin="0", aria-valuemax="100", style="width:100%")
+                  br
+              // Messages d'erreurs
+              div(ng-if="erreur")
+                  .alert.alert-danger(style="width: 85%", align="center", name="errorMsg")
+                      p(ng-bind="errorMsg")
+                  button.btn.btn-default(type="button", ng-click="cacherModal()") Retour
+
+  #blok2.container-fluid
+      // About Section
+      br
+      br
+      section#about.container.text-center
+          .row
+              .col-lg-8.col-lg-offset-2
+                  h2 A propos de 1Rempla
+                  p.redColor
+                    | _____________
+                  p
+                      |1Rempla est un site permettant d'entrer en contact de façon simple et rapide avec des professionnels de la santé pour organiser des remplacements.
+                  p(style="font-weight: bold")
+                      | 1Rempla est avant tout une plateforme :
+              br
+                
+          .row
+            .descCard
+                img(src='/images/pratique.png' height="100" width="100")
+                br
+                br
+                p.descCardTitle.redColor
+                  | Pratique
+                p.descCardDescription
+                  | Puisqu'elle repose sur un système d'annonce ludique et intuitif. Les installés déposent des annonces de remplacement en fonction de leurs disponibilités et les remplaçants répondent à ces dernières.
+            .descCard
+                img(src='/images/rapide.png' height="100" width="100")
+                br
+                br
+                p.descCardTitle.redColor
+                  | Simple d'utilisation
+                p.descCardDescription
+                  | Avec ses technologies utilisées et notamment le calendrier de disponibilités propre à chaque utilisateur qui permet de poster des annonces en quelques clics. Ce qui vous fera gagner un temps précieux.
+            .descCard
+                img(src='/images/securise.png' height="100" width="100")
+                br
+                br
+                p.descCardTitle.redColor
+                  | Sécurisée
+                p.descCardDescription
+                  | Car nous cherchons avant tout à protéger les informations personnelles de chacun des utilisateurs de la plateforme. En effet, seul vos informations générales sont accessibles par les autres membres.
+                br
+  
+  #blok3
+    .container-fluid
+      // Steps Section
+      br
+      br
+      section#steps.container.text-center
+          .row
+              .col-lg-8.col-lg-offset-2
+                  h2 Fonctionnement d'1Rempla
+                  p.redColor
+                    | _____________
+                  p
+                    | Nous avons cherché à rendre l'utilisation de la plateforme la plus simple et ludique possible. Voici donc les principales étapes du fonctionnement d'1Rempla:
+                  br
+                  br
+          .row.stepRow
+            .step
+              .stepTextDiv.stepTextDivLeft
+                p.stepTitle.redColor
+                  | 1. S'inscrire sur le site
+                p.stepDescription
+                  | Sur 1Rempla, l'inscription est l'une des étapes les plus importante puisque c'est pendant celle-ci que vous allez insiquer toutes les informations qui vont apparaître sur vos annonces de remplacements.
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Formulaire complet selon le type de compte
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Possibilité de changer des informations plus tard
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Sécurité autour du mot de passe
+              .stepGif
+                //img(src="/images/inscription.gif" width="100%" height="auto")
+          br
+          br
+          br
+          .row
+            .step
+              #gif1.stepGif
+                //img(src="/images/poster_annonce.gif" width="100%" height="auto")
+              .stepTextDiv.stepTextDivRight
+                p.stepTitle.redColor
+                  | 2. Poster une annonce
+                p.stepDescription
+                  | Pour poster une annonce, il vous suffit d'indiquer les dates voulues via votre calendrier. Après validation, la plateforme se charge de créer l'annonce avec l'ensemble des informations que vous avez saisies lors de l'inscription.
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Calendrier donnant une large visibilité
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Création d'annonces simple, rapide et ludique
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Génération d'annonces instantanée
+              #gif2.stepGif
+                //img(src="/images/poster_annonce.gif" width="100%" height="auto")
+          br
+          br
+          br
+          .row
+            .step
+              .stepTextDiv.stepTextDivLeft
+                p.stepTitle.redColor
+                  | 3. Trouver et répondre à une annonce
+                p.stepDescription
+                  | Enfin, il est possible de rechercher des annonces via la page d'accueil et d'y répondre via le formulaire situé en bas de celle-ci. Le destinaire recevra un mail et décidera d'accepter ou non votre réponse afin de convenir au remplacement.
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Recherche compléte et affichage des résultats par ordre de pertinence
+                  br
+                  i(class="fa fa-check redColor stepCheck")
+                  |   Création de réponse rapide via un calendrier
+              .stepGif
+                //img(src="/images/repondre_annonce.gif" width="100%" height="auto")
+          br
+          br
+  #blok4.accueilImg.container-fluid
+    // Videos Section
+    br
+    br
+    section#videos.container.text-center
+        .row
+            .col-lg-8.col-lg-offset-2
+                h2(style="color: white") Vidéos de présentations
+                p.redColor
+                  | _____________
+        .row
+            .descCard
+                iframe(width="80%" height="auto" src="https://youtube.com/embed/-nU5kVn-IQ4")
+                br
+                br
+                p.descCardTitle(style="color: white")
+                  | Installé
+                  
+            .descCard
+                iframe(width="80%" height="auto" src="https://youtube.com/embed/4y62lv-rFrs")
+                br
+                br
+                p.descCardTitle(style="color: white")
+                  | Remplaçant
+            
+            .descCard
+                iframe(width="80%" height="auto" src="https://youtube.com/embed/_il3m5OASPU")
+                br
+                br
+                p.descCardTitle(style="color: white")
+                  | Réponses
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false", ng-if="connecte")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel2.modal-title Aide - Recherche et réponse d'annonces
+              .modal-body
+                  videogular(vg-theme="rechercheReponseAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="rechercheReponseAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play
+

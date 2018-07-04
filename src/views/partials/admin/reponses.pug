@@ -1,0 +1,65 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+  link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+  link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+  link(rel="stylesheet", href="/stylesheets/style.css")
+  title Admin - #{title}
+  h2.page-header Gérer les réponses aux annonces
+  br
+  h3 Réponses aux annonces
+  br
+  table.table
+      thead
+          tr
+              th
+                  center Faite par
+              th
+                  center Lieu d'exercice de l'annonce
+              th
+                  center Dates sélectionnées
+              th
+                  center Statut
+              th
+                  center Détails
+      tbody
+          each reponse in reponses
+            tr
+                td
+                    center #{reponse.membre.nom} #{reponse.membre.prenom}
+                td
+                    center #{reponse.site.nomSite}
+                td
+                    center
+                        each date in reponse.reponse.dates
+                          p #{date.jour} #{date.mois} #{date.annee}    
+                td
+                    center
+                        if reponse.reponse.positive
+                          p Validée
+                        else if reponse.reponse.negative
+                          p Refusée
+                        else
+                          p En attente de décision
+                td
+                    center
+                        a(href="/admin/dashboard/reponses/id/"+reponse.reponse._id)
+                          i.fa.fa-comments.fa-pw
+  .form-group(align="center")
+      a(href="/admin/dashboard") Retour

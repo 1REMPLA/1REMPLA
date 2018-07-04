@@ -1,0 +1,22 @@
+.modal#myModal.fade(tabindex='-1', role='dialog', data-backdrop="static")
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h4.modal-title Incompatibilité du navigateur
+      .modal-body
+        p Votre navigateur est incompatible avec ce site internet, veuillez installer un des navigateurs ci-dessous:
+        a(target="blank", href="https://www.google.fr/chrome/browser/desktop/index.html?brand=CHBD&gclid=CjwKCAjwlrnNBRBMEiwApKU4PK8f4Uzz7aqnGFn_oIRfyGYcOjtFx_20WBNsbiI-uOkSfw0HqZOK0RoCh6oQAvD_BwE")
+          img#googleC(src="https://lh3.googleusercontent.com/nYhPnY2I-e9rpqnid9u9aAODz4C04OycEGxqHG5vxFnA35OGmLMrrUmhM9eaHKJ7liB-=w300" )
+          p Google Chrome
+        a(target="blank", href="https://www.mozilla.org/fr/firefox/new/")
+          img#mozilla(src="https://www.mozilla.org/media/img/firefox/firefox-256.e2c1fc556816.jpg" )
+          p Mozilla Firefox
+          
+script.
+  document.onstatechange = function(){
+    if(DetectRTC.browser.isIE){
+      $('#myModal').modal({ show: false});
+      $('#myModal').modal('show');
+    }
+  }
+  document.onstatechange();

@@ -1,0 +1,125 @@
+block header
+  nav.navbar.navbar-toggleable-md.navbar-findcond.navbar-fixed-top
+      .container
+          .navbar-header
+              img.navbar-brand.imgHeader(src="/images/logo.png")
+              a.navbar-brand(href="/#/") 1REMPLA
+              button.navbar-brand.navbar-toggle(type="button", data-toggle="collapse", data-target="#navbarSupportedContent", aria-controls="navbarSupportedContent", aria-expanded="false")
+                  i.fa.fa-bars.fa-pw
+          
+          .navbar-right
+            #navbarSupportedContent.collapse.navbar-collapse
+                  ul.nav.navbar-nav.navbar-right.mr-auto
+                    li.active
+                        a(href="/admin/dashboard/") Tableau de bord
+                    li.active
+                        a(href="/admin/deconnexion") Déconnexion
+                    li.dropdown
+
+block content
+    link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/font-awesome/css/font-awesome.min.css")
+    link(rel="stylesheet", href="/stylesheets/style.css")
+    title Admin - #{title}
+    h2.page-header Gérer les membres
+    br
+    h3 Installés
+    br
+    table.table
+        thead
+            tr
+                th
+                    center Genre
+                th
+                    center Nom
+                th
+                    center Prénom
+                th
+                    center Adresse Mail
+                th
+                    center Adresse
+                th
+                    center Ville
+                th
+                    center Code Postal
+                th
+                    center Photo
+                th
+                    center Détails
+        tbody
+            each installe in installes
+              tr
+                  td
+                      center #{installe.genre}
+                  td
+                      center #{installe.nom}
+                  td
+                      center #{installe.prenom}
+                  td
+                      center #{installe.adresseMail}
+                  td
+                      center #{installe.adresseMembre}
+                  td
+                      center #{installe.villeMembre}
+                  td
+                      center #{installe.codePostalMembre}
+                  td
+                      center
+                          img.imgAdmin(src=installe.photoMembre)
+                  td
+                      center
+                          a(href="/admin/dashboard/membres/id/"+installe._id) 
+                            i.fa.fa-address-card-o.fa-fw
+    br
+    hr
+    h3 Remplacants
+    br
+    table.table
+        thead
+            tr
+                th
+                    center Genre
+                th
+                    center Nom
+                th
+                    center Prénom
+                th
+                    center Adresse Mail
+                th
+                    center Adresse
+                th
+                    center Ville
+                th
+                    center Code Postal
+                th
+                    center Photo
+                th
+                    center Détails
+        tbody
+            each remplacant in remplacants
+              tr
+                  td
+                      center #{remplacant.genre}
+                  td
+                      center #{remplacant.nom}
+                  td
+                      center #{remplacant.prenom}
+                  td
+                      center #{remplacant.adresseMail}
+                  td
+                      center #{remplacant.adresseMembre}
+                  td
+                      center #{remplacant.villeMembre}
+                  td
+                      center #{remplacant.codePostalMembre}
+                  td
+                      center
+                          img.imgAdmin(src=remplacant.photoMembre)    
+                  td
+                      center
+                          a(href="/admin/dashboard/membres/id/"+remplacant._id) 
+                            i.fa.fa-address-card-o.fa-fw
+                            
+    br
+    .form-group(align="center")
+        a(href="/admin/dashboard") Retour

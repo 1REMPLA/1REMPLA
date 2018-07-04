@@ -1,0 +1,270 @@
+extends ../../../../layouts/layout
+
+block content
+  // Titre de la page
+  script.
+          function showTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = false;
+          };
+
+          function hideTextAide() {
+              document.getElementsByClassName("textAideBtn")[0].hidden = true;
+          };
+  title(ng-bind="pageTitle")
+  // Navigation dans "Mon compte"
+  br
+  br
+  h2(align="center")
+      b.titleProfil Mon Compte - Modifier un lieu d'exercice
+  hr
+  // Messages d'erreurs
+  .alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+      p(ng-repeat="message in erreurMsg", ng-bind="message")
+  // Message de succès
+  .alert.alert-success(align="center", name="successMsg", ng-if="succes")
+      p(ng-bind="succesMsg")
+      br
+      a.btn.btn-success(type="button", href="#/profil/public") Voir mon Profil
+  .row
+      .col-md-3
+          ul.nav.nav-pills.nav-stacked.admin-menu
+              li
+                  a.underlineProfil(href="#/profil/public")
+                      i.fa.fa-address-card-o.fa-fw
+                      | Consulter mon Profil
+              li
+                  a.underlineProfil(href="#/profil/general")
+                      i.fa.fa-user-o.fa-fw
+                      | Modifier mes Informations
+              li
+                  a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+                      i.fa.fa-table.fa-fw
+                      | Gérer mes Disponibilités
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+                      i.fa.fa-comments.fa-fw
+                      | Réponses à mes Annonces
+              li
+                  a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+                      i.fa.fa-comments.fa-fw
+                      | Mes Réponses
+              li
+                  a.underlineProfil(href="#/profil/motDePasse")
+                      i.fa.fa-key.fa-fw
+                      | Changer de Mot de Passe
+              li.active
+                  a.underlineProfil(href="#/profil/sites", ng-if="installe")
+                      i.fa.fa-home.fa-fw
+                      | Gérer mon(mes) Lieu(x) d'exercice
+              li
+                  a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+                      i.fa.fa-map-o.fa-fw
+                      | Gérer mes zones de disponibilité
+              li
+                  a.underlineProfil(href="#/profil/photo")
+                      i.fa.fa-id-badge.fa-fw
+                      | Changer ma Photo de Profil
+              li
+                  a.underlineProfil(href="#/profil/suppression")
+                      i.fa.fa-trash-o.fa-fw
+                      | Fermer mon Compte
+      .col-md-9
+          // Formulaire de modification d'un site
+          form(name="formulaireModificationSite", ng-submit="modificationSite(site)", ng-if="formulaire", novalidate="")
+              small(style="color: red;") * : Champs obligatoires
+              br
+              br
+              .col-md-12
+                  h3 Informations du lieu d'exercice
+                  hr
+              .col-md-6
+                  input.form-control(type="text", name="idSite", ng-value="id", ng-model="site.idSite", ng-if="false")
+                  label Nom du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="text", name="nomSite", ng-value="nom", ng-model="site.nomSite", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,100}$/", ng-required="true")
+                  div(align="center")
+                      small(ng-if="formulaireModificationSite.nomSite.$invalid && formulaireModificationSite.nomSite.$touched") Insérez un nom de lieu (entre 1 et 100 caractères)
+                      br(ng-if="!formulaireModificationSite.nomSite.$invalid || !formulaireModificationSite.nomSite.$touched")
+                  label Insérer une nouvelle adresse postale pour la modifier
+                  .input-group
+                      input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="place", options="options", details="details", placeholder="Entrez une adresse postale", name="place")
+                      span.input-group-btn
+                          button.btn.btn-default(type="button", ng-click="remplirAdresse(details)") Rechercher
+                  div(align="center")
+                      small(ng-if="formulaireModificationSite.place.$touched && !adresseSiteVal") Insérez une adresse contenant au moins une ville et un code postal
+                      br(ng-if="!formulaireModificationSite.place.$touched || adresseSiteVal")    
+                  label Adresse personnelle
+                  input.form-control(disabled="", type="text", name="adresseSite", placeholder="Adresse personnelle", ng-value="adresse", ng-model="site.adresseSite", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/")
+                  br
+                  .left
+                      label Ville
+                        span(style="color: red;") *
+                      input.form-control(disabled="", type="text", name="villeSite", placeholder="Ville", ng-value="ville", ng-model="site.villeSite", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+                      br
+                  .middle   
+                  .left
+                      label Code Postal
+                        span(style="color: red;") *
+                      input.form-control(disabled="", type="text", name="codePostalSite", placeholder="Code Postal", ng-value="codePostal", ng-model="site.codePostalSite", ng-pattern="/^[0-9]{5}$/", ng-required="true")
+                      br
+                  br
+              .col-md-6
+                  label Téléphone du lieu d'exercice
+                    span(style="color: red;") *
+                  input.form-control(type="tel", name="telSite", ng-value="telephone", ng-model="site.telSite", ng-pattern="/^0[0-9]{9}$/", ng-required="true")
+                  div(align="center")
+                      small(ng-if="formulaireModificationSite.telSite.$invalid && formulaireModificationSite.telSite.$touched") Insérez un numéro de téléphone valide
+                      br(ng-if="!formulaireModificationSite.telSite.$invalid || !formulaireModificationSite.telSite.$touched")
+                  label Horaires du lieu d'exercice
+                  input.form-control(type="text", name="horairesSite", ng-value="horaires", ng-model="site.horairesSite", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù ]{0,48}$/")
+                  div(align="center")
+                      small(ng-if="formulaireModificationSite.horairesSite.$invalid && formulaireModificationSite.horairesSite.$touched") Insérez des horaires correctes (entre 0 et 48 caractères)
+                      br(ng-if="!formulaireModificationSite.horairesSite.$invalid || !formulaireModificationSite.horairesSite.$touched")
+                  label Type de lieu d'exercice
+                    span(style="color: red;") *
+                  br
+                  input.form-control(type="text", ng-if="!modifTypeSiteB", ng-value="typeSite", ng-disabled="true", name="typeSiteInput")
+                  select.form-control(name="typeSite", ng-model="site.typeSite", ng-options="typeSite.typeSite for typeSite in typeSiteObj", ng-if="modifTypeSiteB", ng-required="true")
+                  div(align="center")
+                      small(ng-if="formulaireModificationSite.typeSite.$invalid && formulaireModificationSite.typeSite.$touched") Sélectionnez un type de lieu d'exercice
+                      br(ng-if="!formulaireModificationSite.typeSite.$invalid || !formulaireModificationSite.typeSite.$touched")
+                  div(align="center")
+                      br
+                      button.btn.btn-danger(type="button", name="modifTypeSiteB", ng-click="modifTypeSite()") Modifier le type de lieu d'exercice
+              .col-md-12
+                  br
+                  h3 Description
+                  hr
+                  text-angular(name="modifDescSite", ta-toolbar="[['h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],\
+                  ['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo'],\
+                  ['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],\
+                  ['wordcount', 'charcount']]", ng-model="site.descSite", ta-max-text="750", ta-resize-force-aspect-ratio="true")
+              .col-md-12
+                  br
+                  h3 Photos du lieu d'exercice
+                  hr
+              .col-md-6
+                  label Photo n°1 du lieu d'exercice (Bannière) - 
+                    small 5MB maximum
+                  input(type="file", name="photo1Site", ngf-select, ng-model="site.photo1Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto1")
+                  div(align="center", ng-if="formulaireModificationSite.photo1Site.$invalid && formulaireModificationSite.photo1Site.$touched && !formulaireModificationSite.photo1Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo1Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo1}]}", ng-if="siPhoto1")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto1 = false; suppPhoto1 = true;", ng-if="siPhoto1") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto1") Pas de photo pour le moment
+                  br
+                  br
+                  label Photo n°2 du lieu d'exercice - 
+                    small 5MB maximum
+                  input(type="file", name="photo2Site", ngf-select, ng-model="site.photo2Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto2")
+                  div(align="center", ng-if="formulaireModificationSite.photo2Site.$invalid && formulaireModificationSite.photo2Site.$touched && !formulaireModificationSite.photo2Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo2Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo2}]}", ng-if="siPhoto2")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto2 = false; suppPhoto2 = true;", ng-if="siPhoto2") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto2") Pas de photo pour le moment
+                  br
+                  br
+                  label Photo n°3 du lieu d'exercice - 
+                    small 5MB maximum
+                  input(type="file", name="photo3Site", ngf-select, ng-model="site.photo3Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto3")
+                  div(align="center", ng-if="formulaireModificationSite.photo3Site.$invalid && formulaireModificationSite.photo3Site.$touched && !formulaireModificationSite.photo3Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo3Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo3}]}", ng-if="siPhoto3")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto3 = false; suppPhoto3 = true;", ng-if="siPhoto3") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto3") Pas de photo pour le moment
+                  br
+                  br
+              .col-md-6
+                  label Photo n°4 du lieu d'exercice - 
+                    small 5MB maximum
+                  input(type="file", name="photo4Site", ngf-select, ng-model="site.photo4Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto4")
+                  div(align="center", ng-if="formulaireModificationSite.photo4Site.$invalid && formulaireModificationSite.photo4Site.$touched && !formulaireModificationSite.photo4Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo4Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo4}]}", ng-if="siPhoto4")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto4 = false; suppPhoto4 = true;", ng-if="siPhoto4") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto4") Pas de photo pour le moment
+                  br
+                  br
+                  label Photo n°5 du lieu d'exercice - 
+                    small 5MB maximum
+                  input(type="file", name="photo5Site", ngf-select, ng-model="site.photo5Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto5")
+                  div(align="center", ng-if="formulaireModificationSite.photo5Site.$invalid && formulaireModificationSite.photo5Site.$touched && !formulaireModificationSite.photo5Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo5Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo5}]}", ng-if="siPhoto5")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto5 = false; suppPhoto5 = true;", ng-if="siPhoto5") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto5") Pas de photo pour le moment
+                  br
+                  br
+                  label Photo n°6 du lieu d'exercice - 
+                    small 5MB maximum
+                  input(type="file", name="photo6Site", ngf-select, ng-model="site.photo6Site", ngf-accept="'image/*'", ngf-pattern="'image/*'", ngf-max-size="5MB", validfile, ng-if="!siPhoto6")
+                  div(align="center", ng-if="formulaireModificationSite.photo6Site.$invalid && formulaireModificationSite.photo6Site.$touched && !formulaireModificationSite.photo6Site.$error.maxSize")
+                      small Veuillez fournir une image (.png, .jpeg, .jpg)
+                  div(align="center", ng-if="formulaireModificationSite.photo6Site.$error.maxSize")
+                      small La taille de l'image est trop importante (5MB maximum)
+                  br
+                  img.petitePhoto(ng-src="{[{photo6}]}", ng-if="siPhoto6")
+                  span &nbsp;&nbsp;
+                  button.btn.btn-danger(type="button", ng-click="siPhoto6 = false; suppPhoto6 = true;", ng-if="siPhoto6") Supprimer la photo actuelle
+                  p(ng-if="!siPhoto6") Pas de photo pour le moment
+                  br
+                  br
+              .col-md-12(align="center")
+                  button.btn.btn-danger(type="submit") Opérer les changements
+          // Chargement...
+          .col-md-12(align="center", name="load", ng-if="load")
+              span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+              |       Chargement...
+
+  button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+      i.fa.fa-question.fa-fw
+  .textAideBtn(hidden="true")
+      span Aide
+
+  .modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+      .modal-dialog.aideModal
+          .modal-content
+              .modal-header
+                  button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+                      span(aria-hidden="true") ×
+                  h4#myModalLabel.modal-title Aide - Profil Installé
+              .modal-body
+                  videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+                      vg-media(vg-src="profilInstalleAide.sources")
+
+                      vg-controls(vg-autohide="true", vg-autohide-time="2000")
+                          vg-play-pause-button
+                          vg-time-display {[{ currentTime | date:'mm:ss' }]}
+                          vg-scrub-bar
+                              vg-scrub-bar-current-time
+                          vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+                          vg-volume
+                              vg-mute-button
+                              vg-volume-bar
+                          vg-fullscreen-button
+
+                      vg-overlay-play

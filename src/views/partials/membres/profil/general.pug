@@ -1,0 +1,224 @@
+extends ../../../layouts/layout
+
+block content
+	// Titre de la page
+	script.
+		function showTextAide() {
+			document.getElementsByClassName("textAideBtn")[0].hidden = false;
+		};
+
+		function hideTextAide() {
+			document.getElementsByClassName("textAideBtn")[0].hidden = true;
+		};
+	title(ng-bind="pageTitle")
+	// Navigation dans "Mon compte"
+	br
+	br
+	h2(align="center")
+		b.titleProfil Mon Compte - Modifier mes informations
+	hr
+	// Messages d'erreurs
+	.alert.alert-danger(align="center", name="errorMsg", ng-if="erreur")
+		p(ng-repeat="message in erreurMsg", ng-bind="message")
+	// Message de succès
+	.alert.alert-success(align="center", name="successMsg", ng-if="succes")
+		p(ng-bind="succesMsg")
+		br
+		a.btn.btn-success(type="button", href="#/profil/public") Voir mon Profil
+	.row
+		.col-md-3
+			ul.nav.nav-pills.nav-stacked.admin-menu
+				li
+					a.underlineProfil(href="#/profil/public")
+						i.fa.fa-address-card-o.fa-fw
+						| Consulter mon Profil
+				li.active
+					a.underlineProfil(href="#/profil/general")
+						i.fa.fa-user-o.fa-fw
+						| Modifier mes Informations
+				li
+					a.underlineProfil(href="#/profil/calendrier/{[{idSite1}]}", ng-if="installe")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Annonces
+				li
+					a.underlineProfil(href="#/profil/disponibilite", ng-if="remplacant")
+						i.fa.fa-table.fa-fw
+						| Gérer mes Disponibilités
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="installe")
+						i.fa.fa-comments.fa-fw
+						| Réponses à mes Annonces
+				li
+					a.underlineProfil(href="#/profil/reponses", ng-if="remplacant")
+						i.fa.fa-comments.fa-fw
+						| Mes Réponses
+				li
+					a.underlineProfil(href="#/profil/motDePasse")
+						i.fa.fa-key.fa-fw
+						| Changer de Mot de Passe
+				li
+					a.underlineProfil(href="#/profil/sites", ng-if="installe")
+						i.fa.fa-home.fa-fw
+						| Gérer mon(mes) Lieu(x) d'exercice
+				li
+					a.underlineProfil(href="#/profil/zonesDisponibilite", ng-if="remplacant")
+						i.fa.fa-map-o.fa-fw
+						| Gérer mes zones de disponibilité
+				li
+					a.underlineProfil(href="#/profil/photo")
+						i.fa.fa-id-badge.fa-fw
+						| Changer ma Photo de Profil
+				li
+					a.underlineProfil(href="#/profil/suppression")
+						i.fa.fa-trash-o.fa-fw
+						| Fermer mon Compte
+		.col-md-9
+			// Profil général et formulaire
+			form(name="formulaireProfilG", ng-submit="profilG(membre)", ng-if="formulaire", novalidate)
+				small(style="color: red;") * : Champs obligatoires
+				br
+				br
+				.col-md-6
+					h3  Informations Personnelles 
+					hr
+					label Nom
+						span(style="color: red;") *
+					input.form-control(type="text", name="nom", ng-model="membre.nom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+					div(align="center")
+						small(ng-if="formulaireProfilG.nom.$invalid && formulaireProfilG.nom.$touched") Insérez un nom
+						br(ng-if="!formulaireProfilG.nom.$invalid || !formulaireProfilG.nom.$touched")
+					label Prénom
+						span(style="color: red;") *
+					input.form-control(type="text", name="prenom", ng-model="membre.prenom", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+					div(align="center")
+						small(ng-if="formulaireProfilG.prenom.$invalid && formulaireProfilG.prenom.$touched") Insérez un prénom
+						br(ng-if="!formulaireProfilG.prenom.$invalid || !formulaireProfilG.prenom.$touched")
+					label Adresse Mail
+						span(style="color: red;") *
+					input.form-control(type="email", name="adresseMail", ng-model="membre.adresseMail", ng-required="true", ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/")
+					div(align="center")
+						small(ng-if="formulaireProfilG.adresseMail.$invalid && formulaireProfilG.adresseMail.$touched") Insérez une adresse mail valide
+						br(ng-if="!formulaireProfilG.adresseMail.$invalid || !formulaireProfilG.adresseMail.$touched")
+					label Téléphone personnel
+						span(style="color: red;") *
+					input.form-control(type="tel", name="telMembre", ng-model="membre.telMembre", ng-pattern="/^0[0-9]{9}$/", ng-required="true")
+					div(align="center")
+						small(ng-if="formulaireProfilG.telMembre.$invalid && formulaireProfilG.telMembre.$touched") Insérez un numéro de téléphone valide
+						br(ng-if="!formulaireProfilG.telMembre.$invalid || !formulaireProfilG.telMembre.$touched")
+					label Spécialité
+						span(style="color: red;") *
+					input.form-control(type="text", name="specialiteInput", ng-if="!modifSpeB", ng-value="specialiteMembre", ng-disabled="true")
+					select.form-control(name="specialite", ng-model="membre.specialite", ng-options="specialite.typeSpecialite for specialite in specialiteObj", ng-if="modifSpeB", ng-required="modifSpeB")
+					div(align="center")
+						small(ng-if="formulaireProfilG.specialite.$invalid && formulaireProfilG.specialite.$touched") Sélectionnez une spécialité
+						br(ng-if="!formulaireProfilG.specialite.$invalid || !formulaireProfilG.specialite.$touched")
+					div(align="center")
+						button.btn.btn-danger(type="button", name="modifSpe", ng-click="modifSpe()") Modifier la spécialité
+					br
+				.col-md-6(ng-init="adresseDisableMembre = true")
+					h3  Lieu de résidence 
+					hr
+					label Insérer une nouvelle adresse postale pour la modifier
+					.input-group
+						input#Autocomplete.form-control(type="text", ng-autocomplete="", ng-model="place", options="options", details="details", placeholder="Entrez une adresse postale", name="place")
+						span.input-group-btn
+							button.btn.btn-default(type="button", ng-click="remplirAdresse(details)") Rechercher
+					div(align="center")
+						small(ng-if="formulaireProfilG.place.$touched && !adresseVal") Insérez une adresse contenant au moins une ville et un code postal
+						br(ng-if="!formulaireProfilG.place.$touched || adresseVal")
+					label Adresse personnelle
+					input.form-control(ng-disabled="adresseDisableMembre", type="text", name="adresseMembre", placeholder="Adresse personnelle", ng-model="membre.adresseMembre", ng-pattern="/^[0-9a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{0,100}$/", ng-required="true")
+					br
+					.left
+						label Ville
+							span(style="color: red;") *
+						input.form-control(ng-disabled="adresseDisableMembre", type="text", name="villeMembre", placeholder="Ville", ng-model="membre.villeMembre", ng-pattern="/^[a-zA-Z-ÀÂÄÇÉĒËÊÏÎÔŒÖÛÜÙàâäçéèëêïîœôöûüù' ]{1,48}$/", ng-required="true")
+						div(align="center")
+							small(ng-if="formulaireProfilG.villeMembre.$invalid && formulaireProfilG.villeMembre.$touched") Insérez une ville
+							br(ng-if="!formulaireProfilG.villeMembre.$invalid || !formulaireProfilG.villeMembre.$touched")
+					.middle   
+					.left
+						label Code Postal
+							span(style="color: red;") *
+						input.form-control(ng-disabled="adresseDisableMembre", type="text", name="codePostalMembre", placeholder="Code Postal", ng-model="membre.codePostalMembre", ng-pattern="/^[0-9]{5}$/", ng-required="true")
+						div(align="center")
+							small(ng-if="formulaireProfilG.codePostalMembre.$invalid && formulaireProfilG.codePostalMembre.$touched") Insérez un code postal valide (5 chiffres)
+							br(ng-if="!formulaireProfilG.codePostalMembre.$invalid || !formulaireProfilG.codePostalMembre.$touched")
+					br
+					center
+						label Insérer manuellement son adresse&nbsp;&nbsp;
+						button.btn.btn-default(type="button", ng-click="adresseDisableMembre = !adresseDisableMembre", ng-if="adresseDisableMembre") Déverrouiller les champs
+						button.btn.btn-default(type="button", ng-click="adresseDisableMembre = !adresseDisableMembre", ng-if="!adresseDisableMembre") Verrouiller les champs
+					br
+					div(ng-if="installe")
+						.left.checkbox
+							label
+								input(type="checkbox", ng-model="membre.successeur")
+								|  Recherche un successeur
+						.middle   
+						.left.checkbox
+							label
+								input(type="checkbox", ng-model="membre.collaborateur")
+								|  Recherche un collaborateur
+				.col-md-12
+					br
+					label Biographie
+					text-angular(name="biographie", ta-toolbar="[['h3', 'h4', 'h5', 'h6', 'p', 'pre', 'quote'],\
+					['bold', 'italics', 'underline', 'strikeThrough', 'ul', 'ol', 'redo', 'undo'],\
+					['justifyLeft', 'justifyCenter', 'justifyRight', 'indent', 'outdent'],\
+					['wordcount', 'charcount']]", ng-model="membre.biographie", ta-max-text="750", ta-resize-force-aspect-ratio="true")
+				.col-md-12(align="center")
+					br
+					button.btn.btn-danger(type="submit") Opérer les changements
+			// Chargement...
+			.col-md-12(align="center", name="load", ng-if="load")
+				span.glyphicon.glyphicon-refresh.glyphicon-refresh-animate
+				|       Chargement...
+
+	button#aideBtn(class="btn btn-danger", onmouseover="showTextAide()", onmouseout="hideTextAide()", data-toggle="modal", data-target=".aideModal", data-backdrop="static", data-keyboard="false")
+		i.fa.fa-question.fa-fw
+	.textAideBtn(hidden="true")
+		span Aide
+
+	.modal.aideModal(tabindex="-1", role="dialog", aria-labelledby="mySmallModalLabel")
+		.modal-dialog.aideModal
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", ng-click="stopPlayer()" aria-label="Close")
+						span(aria-hidden="true") ×
+					h4#myModalLabel.modal-title Aide - Profil&nbsp;
+						span(ng-if="installe") Installé
+						span(ng-if="remplacant") Remplaçant
+				.modal-body(ng-if="installe")
+					videogular(vg-theme="profilInstalleAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilInstalleAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play
+
+				.modal-body(ng-if="remplacant")
+					videogular(vg-theme="profilRemplacantAide.theme", vg-player-ready="onPlayerReady($API)")
+						vg-media(vg-src="profilRemplacantAide.sources")
+
+						vg-controls(vg-autohide="true", vg-autohide-time="2000")
+							vg-play-pause-button
+							vg-time-display {[{ currentTime | date:'mm:ss' }]}
+							vg-scrub-bar
+								vg-scrub-bar-current-time
+							vg-time-display {[{ timeLeft | date:'mm:ss' }]}
+							vg-volume
+								vg-mute-button
+								vg-volume-bar
+							vg-fullscreen-button
+
+						vg-overlay-play
